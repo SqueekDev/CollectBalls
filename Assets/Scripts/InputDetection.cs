@@ -60,7 +60,7 @@ public class InputDetection : MonoBehaviour
             else
                 direction = _swipeDelta.y > 0 ? Vector3.up : Vector3.down;
 
-            Swiped?.Invoke(direction);   
+            Swiped?.Invoke(direction);
             ResetSwipe();
         }
     }

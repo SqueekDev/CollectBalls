@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(Rigidbody))]
 public class CellBlock : MonoBehaviour
 {
     [SerializeField] private List<Ball> _balls;
+    [SerializeField]private Rigidbody _rigidbody;
 
+    private int _range = 1;
     private bool _isReleased;
 
     public event UnityAction Released;
+
+    public int BallsCount => _balls.Count;
 
     private void Awake()
     {
@@ -21,12 +26,18 @@ public class CellBlock : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void FixedUpdate()
     {
-        if (other.TryGetComponent(out Grille grille) && _isReleased == false)
+        if (_isReleased == false && _rigidbody != null)
         {
-            Released?.Invoke();
-            _isReleased = true;
+            RaycastHit[] hits = _rigidbody.SweepTestAll(Vector3.back, _range);
+
+            if (hits.Length == 0)
+            {
+                Released?.Invoke();
+                _isReleased = true;
+            }
+
         }
     }
 }

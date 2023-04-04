@@ -13,9 +13,10 @@ public class Ball : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody>();
         _collider = GetComponent<SphereCollider>();
-        _collider.isTrigger = false;
-        float minSizeMultiplier = 0.7f;
-        float maxSizeMultiplier = 1.4f;
+        _collider.isTrigger = true;
+        _rigidbody.isKinematic = true;
+        float minSizeMultiplier = 0.8f;
+        float maxSizeMultiplier = 1.5f;
         float sizeMultiplier = Random.Range(minSizeMultiplier, maxSizeMultiplier);
         transform.localScale *= sizeMultiplier;
     }
@@ -34,7 +35,8 @@ public class Ball : MonoBehaviour
 
     private void OnCellReleased()
     {
-        _collider.isTrigger = true;
+        transform.parent = null;
+        _rigidbody.isKinematic = false;
         float minExtractionForce = 2;
         float maxExtractionForce = 3;
         float extractionForce = Random.Range(minExtractionForce, maxExtractionForce);
