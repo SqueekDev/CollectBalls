@@ -6,12 +6,12 @@ public class CollectionField : MonoBehaviour
 {
     [SerializeField] private LevelController _levelController;
 
+    private int _currentFieldBallsCount;
     private List<Ball> _collectedBalls = new List<Ball>();
 
-    public float ÑollectedBallsCount => _collectedBalls.Count;
-    public float ÑurrentFieldBallsCount => _levelController.CurrentField.BallsCount;
+    private int _collectedBallsCount => _collectedBalls.Count;
 
-    public event UnityAction BallCollected;
+    public event UnityAction<int> BallCollected;
     public event UnityAction AllBallsCollected;
 
     private void OnEnable()
@@ -24,8 +24,10 @@ public class CollectionField : MonoBehaviour
         _levelController.FieldChanged -= OnFieldChanged;
     }
 
-    private void OnFieldChanged(float ballsCount)
+    private void OnFieldChanged(int ballsCount)
     {
+        _currentFieldBallsCount = ballsCount;
+
         for (int i = 0; i < _collectedBalls.Count; i++)
             Destroy(_collectedBalls[i].gameObject);
 
@@ -38,9 +40,9 @@ public class CollectionField : MonoBehaviour
         {
             ball.transform.parent = transform;
             _collectedBalls.Add(ball);
-            BallCollected?.Invoke();
+            BallCollected?.Invoke(_collectedBallsCount);
 
-            if (ÑurrentFieldBallsCount > 0 && ÑollectedBallsCount >= ÑurrentFieldBallsCount)
+            if (_currentFieldBallsCount > 0 && _collectedBallsCount >= _currentFieldBallsCount)
                 AllBallsCollected?.Invoke();
         }
     }

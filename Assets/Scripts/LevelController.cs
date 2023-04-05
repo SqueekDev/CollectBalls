@@ -1,37 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 
 public class LevelController : MonoBehaviour
 {
     [SerializeField] private CollectionField _collectionField;
+    [SerializeField] private Button _restartButton;
+    [SerializeField] private Button _nextLevelButton;
+    [SerializeField] private GameObject _panel;
     [SerializeField] private List<Field> _fields;
 
     private int _currentFieldIndex = 0;
+    private int _currentLevelNumber = 1;
+    private Field _currentField;
     private Coroutine _fihishLevelCorutine;
 
-    public event UnityAction<float> FieldChanged; 
+    public event UnityAction<int> FieldChanged;
+    public event UnityAction<int> LevelChanged;
 
-    public Field CurrentField { get; private set; }
-
-    private void Awake()
-    {
-        if (_fields != null)
-        {
-            CurrentField = Instantiate(_fields[_currentFieldIndex], transform.position, Quaternion.identity, transform);
-            FieldChanged?.Invoke(CurrentField.BallsCount);
-        }
-    }
+    public bool IsPaused { get; private set; }
 
     private void OnEnable()
     {
         _collectionField.AllBallsCollected += OnAllBallsCollected;
+        _restartButton.onClick.AddListener(RestartLevel);
+        _nextLevelButton.onClick.AddListener(NextLevel);
+    }
+
+    private void Start()
+    {
+        _panel.gameObject.SetActive(false);
+
+        if (_fields != null)
+        {
+            ChangeField(_currentFieldIndex);
+            LevelChanged?.Invoke(_currentLevelNumber);
+        }
     }
 
     private void OnDisable()
     {
-        _collectionField.AllBallsCollected -= OnAllBallsCollected;        
+        _collectionField.AllBallsCollected -= OnAllBallsCollected;
+        _restartButton.onClick.RemoveListener(RestartLevel);
+        _nextLevelButton.onClick.RemoveListener(NextLevel);
     }
 
     private void OnAllBallsCollected()
@@ -44,23 +57,39 @@ public class LevelController : MonoBehaviour
 
     private IEnumerator FinishLevel()
     {
-        float delay = 2f;
+        float delay = 1f;
+        IsPaused = true;
         yield return new WaitForSeconds(delay);
-        ChangeField();
-        FieldChanged?.Invoke(CurrentField.BallsCount);
+        _panel.gameObject.SetActive(true);
         _fihishLevelCorutine = null;
     }
 
-    private void ChangeField()
+    private void RestartLevel()
     {
-        if (CurrentField != null)
-            Destroy(CurrentField.gameObject);
+        if (IsPaused == false)
+            ChangeField(_currentFieldIndex);
+    }
 
+    private void NextLevel()
+    {
         _currentFieldIndex++;
+        _currentLevelNumber++;
 
         if (_currentFieldIndex >= _fields.Count)
             _currentFieldIndex = 0;
 
-        CurrentField = Instantiate(_fields[_currentFieldIndex], transform.position, Quaternion.identity, transform);
+        ChangeField(_currentFieldIndex);
+        LevelChanged?.Invoke(_currentLevelNumber);
+        _panel.gameObject.SetActive(false);
+        IsPaused = false;
+    }
+
+    private void ChangeField(int fieldIndex)
+    {
+        if (_currentField != null)
+            Destroy(_currentField.gameObject);
+
+        _currentField = Instantiate(_fields[fieldIndex], transform.position, Quaternion.identity, transform);
+        FieldChanged?.Invoke(_currentField.BallsCount);
     }
 }

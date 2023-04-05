@@ -3,6 +3,8 @@ using UnityEngine.Events;
 
 public class InputDetection : MonoBehaviour
 {
+    [SerializeField] private LevelController _levelController;
+
     private float _minSwipeValue = 50;
     private bool _isSwiping;
     private Vector3 _tapPosition;
@@ -19,31 +21,34 @@ public class InputDetection : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (_levelController.IsPaused == false)
         {
-            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.TryGetComponent(out Grille grille))
+            if (Input.GetMouseButtonDown(0))
             {
-                _currentGrille = grille;
-                _currentGrille.StartSwipe();
-                _isSwiping = true;
-                _tapPosition = Input.mousePosition;
+                Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.TryGetComponent(out Grille grille))
+                {
+                    _currentGrille = grille;
+                    _currentGrille.StartSwipe();
+                    _isSwiping = true;
+                    _tapPosition = Input.mousePosition;
+                }
             }
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            if (_currentGrille != null)
+            else if (Input.GetMouseButtonUp(0))
             {
-                _currentGrille.FinishSwipe();
-                _currentGrille = null;
+                if (_currentGrille != null)
+                {
+                    _currentGrille.FinishSwipe();
+                    _currentGrille = null;
+                }
+
+                ResetSwipe();
             }
 
-            ResetSwipe();
-        }
-
-        CheckSwipe();
+            CheckSwipe();
+        }        
     }
 
     private void CheckSwipe()

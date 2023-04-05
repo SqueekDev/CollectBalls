@@ -9,7 +9,7 @@ public class CellBlock : MonoBehaviour
     [SerializeField] private List<Ball> _balls;
     [SerializeField]private Rigidbody _rigidbody;
 
-    private int _range = 1;
+    private float _range = 0.2f;
     private bool _isReleased;
 
     public event UnityAction Released;

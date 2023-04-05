@@ -12,7 +12,7 @@ public class Field : MonoBehaviour
     private Coroutine _shakeCorutine;
     private Coroutine _rotateCorutine;
     
-    public float BallsCount { get; private set; }
+    public int BallsCount { get; private set; }
 
     private void Awake()
     {
