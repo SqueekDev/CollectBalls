@@ -6,18 +6,22 @@ using UnityEngine.Events;
 
 public class LevelController : MonoBehaviour
 {
-    [SerializeField] private DataController _dataController;
-    [SerializeField] private CollectionField _collectionField;
+    [Header("Panels")]
     [SerializeField] private LoginPanel _loginPanel;
     [SerializeField] private LeaderboardView _leaderboardPanel;
+    [SerializeField] private Tutorial _tutorial;
     [SerializeField] private GameObject _startPanel;
     [SerializeField] private GameObject _fihishPanel;
+    [Header("Buttons")]
     [SerializeField] private Button _startButton;
     [SerializeField] private Button _restartButton;
     [SerializeField] private Button _nextLevelButton;
-    [SerializeField] private List<Field> _fields;
+    [Header("Others")]
+    [SerializeField] private DataController _dataController;
+    [SerializeField] private CollectionField _collectionField;
     [SerializeField] private AudioSource _clickSound;
     [SerializeField] private AudioSource _winSound;
+    [SerializeField] private List<Field> _fields;
 
     private int _currentFieldIndex = 0;
     private int _currentLevelNumber = 1;
@@ -102,6 +106,12 @@ public class LevelController : MonoBehaviour
         _clickSound.Play();
         _startPanel.SetActive(false);
         IsPaused = false;
+        int turorialLevel = 1;
+
+        if (_currentLevelNumber == turorialLevel)
+            _tutorial.gameObject.SetActive(true);
+        else
+            _tutorial.gameObject.SetActive(false);
     }
 
     private void RestartLevel()

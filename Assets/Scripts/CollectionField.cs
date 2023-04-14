@@ -9,8 +9,6 @@ public class CollectionField : MonoBehaviour
     private int _currentFieldBallsCount;
     private List<Ball> _collectedBalls = new List<Ball>();
 
-    private int _collectedBallsCount => _collectedBalls.Count;
-
     public event UnityAction<int> BallCollected;
     public event UnityAction AllBallsCollected;
 
@@ -39,9 +37,9 @@ public class CollectionField : MonoBehaviour
         if (other.TryGetComponent(out Ball ball))
         {
             _collectedBalls.Add(ball);
-            BallCollected?.Invoke(_collectedBallsCount);
+            BallCollected?.Invoke(_collectedBalls.Count);
 
-            if (_currentFieldBallsCount > 0 && _collectedBallsCount >= _currentFieldBallsCount)
+            if (_currentFieldBallsCount > 0 && _collectedBalls.Count >= _currentFieldBallsCount)
                 AllBallsCollected?.Invoke();
         }
     }
