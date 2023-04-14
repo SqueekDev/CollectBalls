@@ -38,7 +38,6 @@ public class CollectionField : MonoBehaviour
     {
         if (other.TryGetComponent(out Ball ball))
         {
-            ball.transform.parent = transform;
             _collectedBalls.Add(ball);
             BallCollected?.Invoke(_collectedBallsCount);
 

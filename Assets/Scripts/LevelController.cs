@@ -6,11 +6,18 @@ using UnityEngine.Events;
 
 public class LevelController : MonoBehaviour
 {
+    [SerializeField] private DataController _dataController;
     [SerializeField] private CollectionField _collectionField;
+    [SerializeField] private LoginPanel _loginPanel;
+    [SerializeField] private LeaderboardView _leaderboardPanel;
+    [SerializeField] private GameObject _startPanel;
+    [SerializeField] private GameObject _fihishPanel;
+    [SerializeField] private Button _startButton;
     [SerializeField] private Button _restartButton;
     [SerializeField] private Button _nextLevelButton;
-    [SerializeField] private GameObject _panel;
     [SerializeField] private List<Field> _fields;
+    [SerializeField] private AudioSource _clickSound;
+    [SerializeField] private AudioSource _winSound;
 
     private int _currentFieldIndex = 0;
     private int _currentLevelNumber = 1;
@@ -19,32 +26,56 @@ public class LevelController : MonoBehaviour
 
     public event UnityAction<int> FieldChanged;
     public event UnityAction<int> LevelChanged;
+    public event UnityAction LevelFinished;
 
     public bool IsPaused { get; private set; }
 
     private void OnEnable()
     {
+        _dataController.LevelNumberLoaded += OnLevelNumberLoaded;
         _collectionField.AllBallsCollected += OnAllBallsCollected;
+        _startButton.onClick.AddListener(StartLevel);
         _restartButton.onClick.AddListener(RestartLevel);
         _nextLevelButton.onClick.AddListener(NextLevel);
+        _loginPanel.Opened += OnPanelOpened;
+        _loginPanel.Closed += OnPanelClosed;
+        _leaderboardPanel.Opened += OnPanelOpened;
+        _leaderboardPanel.Closed += OnPanelClosed;
     }
 
     private void Start()
     {
-        _panel.gameObject.SetActive(false);
+        _startPanel.SetActive(true);
+        IsPaused = true;
 
         if (_fields != null)
-        {
-            ChangeField(_currentFieldIndex);
-            LevelChanged?.Invoke(_currentLevelNumber);
-        }
+            ChangeLevel();
     }
 
     private void OnDisable()
     {
+        _dataController.LevelNumberLoaded -= OnLevelNumberLoaded;
         _collectionField.AllBallsCollected -= OnAllBallsCollected;
+        _startButton.onClick.RemoveListener(StartLevel);
         _restartButton.onClick.RemoveListener(RestartLevel);
         _nextLevelButton.onClick.RemoveListener(NextLevel);
+        _loginPanel.Opened -= OnPanelOpened;
+        _loginPanel.Closed -= OnPanelClosed;
+        _leaderboardPanel.Opened -= OnPanelOpened;
+        _leaderboardPanel.Closed -= OnPanelClosed;
+    }
+
+    private void OnLevelNumberLoaded(int level)
+    {
+        _currentLevelNumber = level;
+        int levelToIndexModifier = 1;
+
+        if (level > _fields.Count)
+            _currentFieldIndex = (level - _fields.Count - levelToIndexModifier);
+        else
+            _currentFieldIndex = level - levelToIndexModifier;
+
+        ChangeLevel();
     }
 
     private void OnAllBallsCollected()
@@ -60,28 +91,47 @@ public class LevelController : MonoBehaviour
         float delay = 1f;
         IsPaused = true;
         yield return new WaitForSeconds(delay);
-        _panel.gameObject.SetActive(true);
+        LevelFinished?.Invoke();
+        _winSound.Play();
+        _fihishPanel.SetActive(true);
         _fihishLevelCorutine = null;
+    }
+
+    private void StartLevel()
+    {
+        _clickSound.Play();
+        _startPanel.SetActive(false);
+        IsPaused = false;
     }
 
     private void RestartLevel()
     {
         if (IsPaused == false)
+        {
+            _clickSound.Play();
             ChangeField(_currentFieldIndex);
+            LevelFinished?.Invoke();
+        }
     }
 
     private void NextLevel()
     {
+        _clickSound.Play();
         _currentFieldIndex++;
         _currentLevelNumber++;
 
         if (_currentFieldIndex >= _fields.Count)
             _currentFieldIndex = 0;
 
+        _fihishPanel.SetActive(false);
+        IsPaused = false;
+        ChangeLevel();
+    }
+
+    private void ChangeLevel()
+    {
         ChangeField(_currentFieldIndex);
         LevelChanged?.Invoke(_currentLevelNumber);
-        _panel.gameObject.SetActive(false);
-        IsPaused = false;
     }
 
     private void ChangeField(int fieldIndex)
@@ -91,5 +141,15 @@ public class LevelController : MonoBehaviour
 
         _currentField = Instantiate(_fields[fieldIndex], transform.position, Quaternion.identity, transform);
         FieldChanged?.Invoke(_currentField.BallsCount);
+    }
+
+    private void OnPanelOpened()
+    {
+        IsPaused = true;
+    }
+
+    private void OnPanelClosed()
+    {
+        IsPaused = false;
     }
 }

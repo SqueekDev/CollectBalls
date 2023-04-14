@@ -4,9 +4,11 @@ using UnityEngine.Events;
 public class InputDetection : MonoBehaviour
 {
     [SerializeField] private LevelController _levelController;
+    [SerializeField] private AudioSource _audioSource;
 
     private float _minSwipeValue = 50;
     private bool _isSwiping;
+    private bool _isMobile;
     private Vector3 _tapPosition;
     private Vector3 _swipeDelta;
     private Camera _camera;
@@ -17,38 +19,74 @@ public class InputDetection : MonoBehaviour
     private void Awake()
     {
         _camera = Camera.main;
+        _isMobile = Application.isMobilePlatform;
     }
 
     private void Update()
     {
         if (_levelController.IsPaused == false)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (_isMobile == false)
             {
-                Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-
-                if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.TryGetComponent(out Grille grille))
+                if (Input.GetMouseButtonDown(0))
                 {
-                    _currentGrille = grille;
-                    _currentGrille.StartSwipe();
-                    _isSwiping = true;
-                    _tapPosition = Input.mousePosition;
+                    TrySelectGrille(Input.mousePosition);
+                }
+                else if (Input.GetMouseButtonUp(0))
+                {
+                    UnselectGrille();
+                    ResetSwipe();
                 }
             }
-            else if (Input.GetMouseButtonUp(0))
+            else
             {
-                if (_currentGrille != null)
+                if (Input.touchCount > 0)
                 {
-                    _currentGrille.FinishSwipe();
-                    _currentGrille = null;
+                    if (Input.GetTouch(0).phase == TouchPhase.Began)
+                    {
+                        TrySelectGrille(Input.GetTouch(0).position);
+                    }
+                    else if (Input.GetTouch(0).phase == TouchPhase.Canceled || Input.GetTouch(0).phase == TouchPhase.Ended)
+                    {
+                        UnselectGrille();
+                        ResetSwipe();
+                    }
                 }
-
-                ResetSwipe();
             }
 
             CheckSwipe();
         }        
+    }
+
+    private void OnSounded(AudioClip audioClip)
+    {
+        _audioSource.PlayOneShot(audioClip);
+    }
+
+    private void TrySelectGrille(Vector3 tapPosition)
+    {
+        Ray ray = _camera.ScreenPointToRay(tapPosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.TryGetComponent(out Grille grille))
+        {
+            _currentGrille = grille;
+            _currentGrille.StartSwipe();
+            _isSwiping = true;
+            _currentGrille.Sounded += OnSounded;
+            _tapPosition = tapPosition;
+        }
+        
+    }
+
+    private void UnselectGrille()
+    {
+        if (_currentGrille != null)
+        {
+            _currentGrille.Sounded -= OnSounded;
+            _currentGrille.FinishSwipe();
+            _currentGrille = null;
+        }
     }
 
     private void CheckSwipe()

@@ -1,8 +1,13 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody), typeof(MeshRenderer))]
 public class Grille : MonoBehaviour
 {
+    [SerializeField] private ParticleSystem _particleSystem;
+    [SerializeField] private AudioClip _swipedClip;
+    [SerializeField] private AudioClip _blockedClip;
+
     private float _step = 0.2f;
     private float _range = 1f;
     private float _moveProgress;
@@ -12,6 +17,8 @@ public class Grille : MonoBehaviour
     private Vector3 _targetPosition;
     private Rigidbody _rigidbody;
     private MeshRenderer _meshRenderer;
+
+    public event UnityAction<AudioClip> Sounded;
 
     private void Awake()
     {
@@ -37,18 +44,23 @@ public class Grille : MonoBehaviour
     public void StartSwipe()
     {
         InputDetection.Swiped += OnSwiped;
+        _particleSystem.Play();
         _currentPosition = transform.localPosition;
     }
 
     public void FinishSwipe()
     {
         InputDetection.Swiped -= OnSwiped;
+        _particleSystem.Stop();
     }
 
     public void SetMaterial(Material material)
     {
         if (material != null)
+        {
             _meshRenderer.material = material;
+            _particleSystem.startColor = _meshRenderer.material.color;
+        }
     }
 
     private void OnSwiped(Vector3 direction)
@@ -59,9 +71,15 @@ public class Grille : MonoBehaviour
             RaycastHit hit;
 
             if (_rigidbody != null && _rigidbody.SweepTest(direction, out hit, _range) && (hit.collider.gameObject.TryGetComponent(out Grille grille) || hit.collider.gameObject.TryGetComponent(out Obstacle obstacle)))
+            {
                 _targetPosition = _startPosition;
+                Sounded?.Invoke(_blockedClip);
+            }
             else
+            {
                 _startPosition = _targetPosition;
+                Sounded?.Invoke(_swipedClip);
+            }
 
             _moveProgress = 0;
         }

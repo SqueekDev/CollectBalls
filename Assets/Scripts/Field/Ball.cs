@@ -18,7 +18,7 @@ public class Ball : MonoBehaviour
         float minSizeMultiplier = 0.8f;
         float maxSizeMultiplier = 1.5f;
         float sizeMultiplier = Random.Range(minSizeMultiplier, maxSizeMultiplier);
-        transform.localScale *= sizeMultiplier;
+        transform.localScale = new Vector3(sizeMultiplier * transform.localScale.x, sizeMultiplier * transform.localScale.y, sizeMultiplier * transform.localScale.z);
     }
 
     private void OnDisable()
