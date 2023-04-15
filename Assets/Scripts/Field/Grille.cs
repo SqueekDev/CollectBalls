@@ -35,7 +35,7 @@ public class Grille : MonoBehaviour
         transform.localPosition = Vector3.Lerp(_currentPosition, _targetPosition, _moveProgress);
         _moveProgress += _step;
 
-        if (transform.position == _targetPosition)
+        if (transform.localPosition == _targetPosition)
             _targetReached = true;
         else
             _targetReached = false;

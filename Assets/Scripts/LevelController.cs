@@ -23,8 +23,8 @@ public class LevelController : MonoBehaviour
     [SerializeField] private AudioSource _winSound;
     [SerializeField] private List<Field> _fields;
 
-    private int _currentFieldIndex = 0;
-    private int _currentLevelNumber = 1;
+    private int _currentFieldIndex = 55;
+    private int _currentLevelNumber = 56;
     private Field _currentField;
     private Coroutine _fihishLevelCorutine;
 
@@ -149,7 +149,7 @@ public class LevelController : MonoBehaviour
         if (_currentField != null)
             Destroy(_currentField.gameObject);
 
-        _currentField = Instantiate(_fields[fieldIndex], transform.position, Quaternion.identity, transform);
+        _currentField = Instantiate(_fields[fieldIndex], transform.position + _fields[fieldIndex].transform.localPosition, Quaternion.identity, transform);
         FieldChanged?.Invoke(_currentField.BallsCount);
     }
 

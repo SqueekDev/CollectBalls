@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(SphereCollider))]
@@ -8,6 +7,7 @@ public class Ball : MonoBehaviour
     private CellBlock _cell;
     private Rigidbody _rigidbody;
     private SphereCollider _collider;
+    private Coroutine _releaseCorutine;
 
     private void Awake()
     {
@@ -15,8 +15,8 @@ public class Ball : MonoBehaviour
         _collider = GetComponent<SphereCollider>();
         _collider.isTrigger = true;
         _rigidbody.isKinematic = true;
-        float minSizeMultiplier = 0.8f;
-        float maxSizeMultiplier = 1.5f;
+        float minSizeMultiplier = 1f;
+        float maxSizeMultiplier = 1.6f;
         float sizeMultiplier = Random.Range(minSizeMultiplier, maxSizeMultiplier);
         transform.localScale = new Vector3(sizeMultiplier * transform.localScale.x, sizeMultiplier * transform.localScale.y, sizeMultiplier * transform.localScale.z);
     }
@@ -35,6 +35,18 @@ public class Ball : MonoBehaviour
 
     private void OnCellReleased()
     {
+        if (_releaseCorutine != null)
+            StopCoroutine(_releaseCorutine);
+
+        _releaseCorutine = StartCoroutine(Release());
+    }
+
+    private IEnumerator Release()
+    {
+        float minDelayTime = 0f;
+        float maxDelayTime = 0.2f;
+        float delayTime = Random.Range(minDelayTime, maxDelayTime);
+        yield return new WaitForSeconds(delayTime);
         transform.parent = null;
         _rigidbody.isKinematic = false;
         float minExtractionForce = 2;
@@ -46,13 +58,12 @@ public class Ball : MonoBehaviour
         float directionZ = -1f;
         Vector3 direction = new Vector3(directionX, directionY, directionZ);
         _rigidbody.AddForce(direction * extractionForce, ForceMode.Impulse);
+        _releaseCorutine = null;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.TryGetComponent(out CollectionField collectionField))
-        {
             _collider.isTrigger = false;
-        }
     }
 }

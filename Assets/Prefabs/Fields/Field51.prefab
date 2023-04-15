@@ -183,7 +183,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2747911470669109779, guid: ad6df700d81e92f438e6ac070c1b25a3, type: 3}
       propertyPath: m_Name
-      value: Grille1 (1)
+      value: Grille1
       objectReference: {fileID: 0}
     - target: {fileID: 2747911470669109779, guid: ad6df700d81e92f438e6ac070c1b25a3, type: 3}
       propertyPath: m_IsActive
