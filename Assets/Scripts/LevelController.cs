@@ -23,8 +23,8 @@ public class LevelController : MonoBehaviour
     [SerializeField] private AudioSource _winSound;
     [SerializeField] private List<Field> _fields;
 
-    private int _currentFieldIndex = 55;
-    private int _currentLevelNumber = 56;
+    private int _currentFieldIndex = 0;
+    private int _currentLevelNumber = 1;
     private Field _currentField;
     private Coroutine _fihishLevelCorutine;
 
@@ -54,6 +54,7 @@ public class LevelController : MonoBehaviour
 
         if (_fields != null)
             ChangeLevel();
+
     }
 
     private void OnDisable()
