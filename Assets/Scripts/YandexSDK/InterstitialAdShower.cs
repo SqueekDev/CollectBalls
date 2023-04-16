@@ -29,7 +29,7 @@ public class InterstitialAdShower : MonoBehaviour
         }
         else
         {
-            //InterstitialAd.Show(OnOpenCallBack, OnCloseCallBack);
+            InterstitialAd.Show(OnOpenCallBack, OnCloseCallBack);
             _counter = 0;
         }
 
