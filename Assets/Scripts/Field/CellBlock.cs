@@ -36,7 +36,6 @@ public class CellBlock : MonoBehaviour
                 Released?.Invoke();
                 _isReleased = true;
             }
-
         }
     }
 }

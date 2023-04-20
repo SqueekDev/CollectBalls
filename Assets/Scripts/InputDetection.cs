@@ -6,7 +6,7 @@ public class InputDetection : MonoBehaviour
     [SerializeField] private LevelController _levelController;
     [SerializeField] private AudioSource _audioSource;
 
-    private float _minSwipeValue = 50;
+    private float _minSwipeValue = 30;
     private bool _isSwiping;
     private bool _isMobile;
     private Vector3 _tapPosition;

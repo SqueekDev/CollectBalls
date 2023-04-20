@@ -5,8 +5,8 @@ using Lean.Localization;
 public class Localization : MonoBehaviour
 {
     private const string _englishCode = "en";
-    private const string _russianCode = "en";
-    private const string _turkishCode = "en";
+    private const string _russianCode = "ru";
+    private const string _turkishCode = "tr";
     private const string _english = "English";
     private const string _russian = "Russian";
     private const string _turkish = "Turkish";

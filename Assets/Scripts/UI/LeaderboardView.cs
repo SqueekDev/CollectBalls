@@ -6,7 +6,7 @@ public class LeaderboardView : MonoBehaviour
 {
     [SerializeField] private LeaderboardPlayerView _template;
     [SerializeField] private LeaderboardController _leaderboardController;
-    [SerializeField] private LoginPanel _loginPanel;
+    [SerializeField] private GamePanel _loginPanel;
 
     private List<LeaderboardPlayerView> _leaderboardPlayerViews = new List<LeaderboardPlayerView>();
 
@@ -34,7 +34,6 @@ public class LeaderboardView : MonoBehaviour
         {
             LeaderboardPlayerView leaderboardPlayerView = Instantiate(_template, transform);
             leaderboardPlayerView.Init(player.Number, player.Name, player.Level);
-
             _leaderboardPlayerViews.Add(leaderboardPlayerView);
         }
     }

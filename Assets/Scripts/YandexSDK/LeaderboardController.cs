@@ -78,7 +78,7 @@ public class LeaderboardController : MonoBehaviour
                 if (string.IsNullOrEmpty(playerName))
                     playerName = "Anonymous";
 
-                _leaderboardPlayers.Add(new LeaderboardPlayer(number, name, level));
+                _leaderboardPlayers.Add(new LeaderboardPlayer(number, playerName, level));
             }
 
             Created?.Invoke(_leaderboardPlayers);

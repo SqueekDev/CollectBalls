@@ -11,7 +11,7 @@ public class LeaderboardPlayerView : MonoBehaviour
 
     private string _levelText;
 
-    private void Start()
+    private void OnEnable()
     {
         _levelText = LeanLocalization.GetTranslationText(_phrase.name);
     }

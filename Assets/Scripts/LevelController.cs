@@ -7,20 +7,24 @@ using UnityEngine.Events;
 public class LevelController : MonoBehaviour
 {
     [Header("Panels")]
-    [SerializeField] private LoginPanel _loginPanel;
+    [SerializeField] private GamePanel _loginPanel;
+    [SerializeField] private GamePanel _lostPanel;
     [SerializeField] private LeaderboardView _leaderboardPanel;
     [SerializeField] private Tutorial _tutorial;
     [SerializeField] private GameObject _startPanel;
     [SerializeField] private GameObject _fihishPanel;
     [Header("Buttons")]
     [SerializeField] private Button _startButton;
-    [SerializeField] private Button _restartButton;
+    [SerializeField] private Button _restartLevelButton;
+    [SerializeField] private RestartButton _restartButton;
     [SerializeField] private Button _nextLevelButton;
     [Header("Others")]
     [SerializeField] private DataController _dataController;
     [SerializeField] private CollectionField _collectionField;
     [SerializeField] private AudioSource _clickSound;
     [SerializeField] private AudioSource _winSound;
+    [SerializeField] private AudioSource _lostSound;
+    [SerializeField] private Timer _timer;
     [SerializeField] private List<Field> _fields;
 
     private int _currentFieldIndex = 0;
@@ -31,6 +35,7 @@ public class LevelController : MonoBehaviour
     public event UnityAction<int> FieldChanged;
     public event UnityAction<int> LevelChanged;
     public event UnityAction LevelFinished;
+    public event UnityAction LevelRestarted;
 
     public bool IsPaused { get; private set; }
 
@@ -39,12 +44,17 @@ public class LevelController : MonoBehaviour
         _dataController.LevelNumberLoaded += OnLevelNumberLoaded;
         _collectionField.AllBallsCollected += OnAllBallsCollected;
         _startButton.onClick.AddListener(StartLevel);
-        _restartButton.onClick.AddListener(RestartLevel);
+        _restartLevelButton.onClick.AddListener(OnRestartLevelButtonClick);
         _nextLevelButton.onClick.AddListener(NextLevel);
+        _restartButton.Clicked += RestartLevel;
         _loginPanel.Opened += OnPanelOpened;
         _loginPanel.Closed += OnPanelClosed;
+        _lostPanel.Opened += OnPanelOpened;
+        _lostPanel.Closed += OnPanelClosed;
         _leaderboardPanel.Opened += OnPanelOpened;
         _leaderboardPanel.Closed += OnPanelClosed;
+        _timer.Expired += OnTimeExpired;
+        _timer.Added += OnTimeAdded;
     }
 
     private void Start()
@@ -54,7 +64,6 @@ public class LevelController : MonoBehaviour
 
         if (_fields != null)
             ChangeLevel();
-
     }
 
     private void OnDisable()
@@ -62,12 +71,28 @@ public class LevelController : MonoBehaviour
         _dataController.LevelNumberLoaded -= OnLevelNumberLoaded;
         _collectionField.AllBallsCollected -= OnAllBallsCollected;
         _startButton.onClick.RemoveListener(StartLevel);
-        _restartButton.onClick.RemoveListener(RestartLevel);
         _nextLevelButton.onClick.RemoveListener(NextLevel);
+        _restartLevelButton.onClick.RemoveListener(OnRestartLevelButtonClick);
+        _restartButton.Clicked -= RestartLevel;
         _loginPanel.Opened -= OnPanelOpened;
         _loginPanel.Closed -= OnPanelClosed;
+        _lostPanel.Opened -= OnPanelOpened;
+        _lostPanel.Closed -= OnPanelClosed;
         _leaderboardPanel.Opened -= OnPanelOpened;
         _leaderboardPanel.Closed -= OnPanelClosed;
+        _timer.Expired -= OnTimeExpired;
+        _timer.Added -= OnTimeAdded;
+    }
+
+    private void OnTimeExpired()
+    {
+        _lostPanel.gameObject.SetActive(true);
+        _lostSound.Play();
+    }
+
+    private void OnTimeAdded()
+    {
+        _lostPanel.gameObject.SetActive(false);
     }
 
     private void OnLevelNumberLoaded(int level)
@@ -115,14 +140,18 @@ public class LevelController : MonoBehaviour
             _tutorial.gameObject.SetActive(false);
     }
 
-    private void RestartLevel()
+    private void OnRestartLevelButtonClick()
     {
         if (IsPaused == false)
-        {
-            _clickSound.Play();
-            ChangeField(_currentFieldIndex);
-            LevelFinished?.Invoke();
-        }
+            RestartLevel();
+    }
+
+    private void RestartLevel()
+    {
+        _clickSound.Play();
+        ChangeField(_currentFieldIndex);
+        LevelFinished?.Invoke();
+        LevelRestarted?.Invoke();
     }
 
     private void NextLevel()

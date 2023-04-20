@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class LoginPanel : MonoBehaviour
+public class GamePanel : MonoBehaviour
 {
     public event UnityAction Opened;
     public event UnityAction Closed;

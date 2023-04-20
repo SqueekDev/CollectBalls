@@ -4,7 +4,7 @@ using Agava.WebUtility;
 
 public class SoundController : MonoBehaviour
 {
-    [SerializeField] private InterstitialAdShower _interstitialAdShower;
+    [SerializeField] private AdShower _adShower;
     [SerializeField] private MusicButton _soundButton;
     [SerializeField] private MusicButton _musicButton;
     [SerializeField] private AudioSource _musicSource;
@@ -18,7 +18,7 @@ public class SoundController : MonoBehaviour
     {
         _soundButton.Clicked += OnSoundButtonClick;
         _musicButton.Clicked += OnMusicButtonClick;
-        _interstitialAdShower.AdShowing += OnAdShowed;
+        _adShower.AdShowing += OnAdShowed;
         WebApplication.InBackgroundChangeEvent += OnInBackgroundChange;
     }
 
@@ -26,7 +26,7 @@ public class SoundController : MonoBehaviour
     {
         _soundButton.Clicked -= OnSoundButtonClick;
         _musicButton.Clicked -= OnMusicButtonClick;
-        _interstitialAdShower.AdShowing -= OnAdShowed;
+        _adShower.AdShowing -= OnAdShowed;
         WebApplication.InBackgroundChangeEvent -= OnInBackgroundChange;
     }
 

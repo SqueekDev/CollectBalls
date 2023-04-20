@@ -4,7 +4,7 @@ using Agava.YandexGames;
 
 public class LeaderboardButton : GameButton
 {
-    [SerializeField] private LoginPanel _loginPanel;
+    [SerializeField] private GamePanel _loginPanel;
     [SerializeField] private LevelController _levelController;
 
     public event UnityAction AutorizationCompleted;
