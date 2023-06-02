@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Agava.WebUtility;
 
-public class SoundController : MonoBehaviour
+public class SoundMuter : MonoBehaviour
 {
     [SerializeField] private AdShower _adShower;
     [SerializeField] private MusicButton _soundButton;
