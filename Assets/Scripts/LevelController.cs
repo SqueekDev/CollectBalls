@@ -19,7 +19,7 @@ public class LevelController : MonoBehaviour
     [SerializeField] private RestartButton _restartButton;
     [SerializeField] private Button _nextLevelButton;
     [Header("Others")]
-    [SerializeField] private DataController _dataController;
+    [SerializeField] private DataSaver _dataController;
     [SerializeField] private CollectionField _collectionField;
     [SerializeField] private AudioSource _clickSound;
     [SerializeField] private AudioSource _winSound;

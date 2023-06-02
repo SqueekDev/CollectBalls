@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class DataController : MonoBehaviour
+public class DataSaver : MonoBehaviour
 {
     [SerializeField] private LevelController _levelController;
 
