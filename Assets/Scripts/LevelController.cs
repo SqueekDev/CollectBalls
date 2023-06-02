@@ -19,7 +19,7 @@ public class LevelController : MonoBehaviour
     [SerializeField] private RestartButton _restartButton;
     [SerializeField] private Button _nextLevelButton;
     [Header("Others")]
-    [SerializeField] private DataSaver _dataController;
+    [SerializeField] private DataSaver _dataSaver;
     [SerializeField] private CollectionField _collectionField;
     [SerializeField] private AudioSource _clickSound;
     [SerializeField] private AudioSource _winSound;
@@ -41,7 +41,7 @@ public class LevelController : MonoBehaviour
 
     private void OnEnable()
     {
-        _dataController.LevelNumberLoaded += OnLevelNumberLoaded;
+        _dataSaver.LevelNumberLoaded += OnLevelNumberLoaded;
         _collectionField.AllBallsCollected += OnAllBallsCollected;
         _startButton.onClick.AddListener(StartLevel);
         _restartLevelButton.onClick.AddListener(OnRestartLevelButtonClick);
@@ -68,7 +68,7 @@ public class LevelController : MonoBehaviour
 
     private void OnDisable()
     {
-        _dataController.LevelNumberLoaded -= OnLevelNumberLoaded;
+        _dataSaver.LevelNumberLoaded -= OnLevelNumberLoaded;
         _collectionField.AllBallsCollected -= OnAllBallsCollected;
         _startButton.onClick.RemoveListener(StartLevel);
         _nextLevelButton.onClick.RemoveListener(NextLevel);
