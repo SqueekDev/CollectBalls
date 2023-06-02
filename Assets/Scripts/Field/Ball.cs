@@ -8,6 +8,14 @@ public class Ball : MonoBehaviour
     private Rigidbody _rigidbody;
     private SphereCollider _collider;
     private Coroutine _releaseCorutine;
+    private float _minSizeMultiplier = 1f;
+    private float _maxSizeMultiplier = 1.6f;
+    private float _minDelayTime = 0f;
+    private float _maxDelayTime = 0.2f;
+    private float _minExtractionForce = 2;
+    private float _maxExtractionForce = 3;
+    private float _spread = 0.2f;
+    private float _directionZ = -1f;
 
     private void Awake()
     {
@@ -15,9 +23,7 @@ public class Ball : MonoBehaviour
         _collider = GetComponent<SphereCollider>();
         _collider.isTrigger = true;
         _rigidbody.isKinematic = true;
-        float minSizeMultiplier = 1f;
-        float maxSizeMultiplier = 1.6f;
-        float sizeMultiplier = Random.Range(minSizeMultiplier, maxSizeMultiplier);
+        float sizeMultiplier = Random.Range(_minSizeMultiplier, _maxSizeMultiplier);
         transform.localScale = new Vector3(sizeMultiplier * transform.localScale.x, sizeMultiplier * transform.localScale.y, sizeMultiplier * transform.localScale.z);
     }
 
@@ -43,20 +49,14 @@ public class Ball : MonoBehaviour
 
     private IEnumerator Release()
     {
-        float minDelayTime = 0f;
-        float maxDelayTime = 0.2f;
-        float delayTime = Random.Range(minDelayTime, maxDelayTime);
+        float delayTime = Random.Range(_minDelayTime, _maxDelayTime);
         yield return new WaitForSeconds(delayTime);
         transform.parent = null;
         _rigidbody.isKinematic = false;
-        float minExtractionForce = 2;
-        float maxExtractionForce = 3;
-        float extractionForce = Random.Range(minExtractionForce, maxExtractionForce);
-        float spread = 0.2f;
-        float directionX = Random.Range(-spread, spread);
-        float directionY = Random.Range(0, spread);
-        float directionZ = -1f;
-        Vector3 direction = new Vector3(directionX, directionY, directionZ);
+        float extractionForce = Random.Range(_minExtractionForce, _maxExtractionForce);
+        float directionX = Random.Range(-_spread, _spread);
+        float directionY = Random.Range(0, _spread);
+        Vector3 direction = new Vector3(directionX, directionY, _directionZ);
         _rigidbody.AddForce(direction * extractionForce, ForceMode.Impulse);
         _releaseCorutine = null;
     }

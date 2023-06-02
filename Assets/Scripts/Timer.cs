@@ -3,14 +3,17 @@ using UnityEngine.Events;
 
 public class Timer : MonoBehaviour
 {
+    private const float _rewardExtraTime = 20f;
+    
     [SerializeField] private LevelController _levelController;
     [SerializeField] private AdShower _adShower;
     [SerializeField] private float _startTime;
 
-    private const float _rewardExtraTime = 20f; 
     private float _currentLevelTime;
     private float _time;
     private bool _isCounting;
+    private float _extraTimePerLevel = 10f;
+    private int _levelDivider = 10;
 
     public float CurrentTime => _time;
 
@@ -54,9 +57,7 @@ public class Timer : MonoBehaviour
 
     private void OnLevelChanged(int levelNumber)
     {
-        float extraTime = 10f;
-        int divider = 10;
-        _currentLevelTime = _startTime + (levelNumber / divider) * extraTime;
+        _currentLevelTime = _startTime + (levelNumber / _levelDivider) * _extraTimePerLevel;
         _time = _currentLevelTime;
         _isCounting = true;
     }

@@ -11,6 +11,8 @@ public class Field : MonoBehaviour
     private Quaternion _startRotation;
     private Coroutine _shakeCorutine;
     private Coroutine _rotateCorutine;
+    private float _delayTime = 0.01f;
+    private float _step = 0.2f;
     
     public int BallsCount { get; private set; }
 
@@ -80,15 +82,13 @@ public class Field : MonoBehaviour
 
     private IEnumerator Rotate(Quaternion startRotation, Quaternion targetRotation)
     {
-        float delayTime = 0.01f;
-        WaitForSeconds delay = new WaitForSeconds(delayTime);
+        WaitForSeconds delay = new WaitForSeconds(_delayTime);
         float rotateProgress = 0;
-        float step = 0.2f;
 
         while (transform.rotation != targetRotation)
         {
             transform.rotation = Quaternion.Lerp(startRotation, targetRotation, rotateProgress);
-            rotateProgress += step;
+            rotateProgress += _step;
             yield return delay;
         }
 

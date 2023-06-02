@@ -12,6 +12,9 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private Transform _target;
 
     private Coroutine _moveCorutine;
+    private float _step = 0.1f;
+    private float _moveDelayTime = 0.05f;
+    private float _cicleDelayTime = 0.5f;
 
     private void OnEnable()
     {
@@ -37,11 +40,8 @@ public class Tutorial : MonoBehaviour
 
     private IEnumerator MovePointer()
     {
-        float step = 0.1f;
-        float moveDelayTime = 0.05f;
-        WaitForSeconds moveDelay = new WaitForSeconds(moveDelayTime);
-        float cicleDelayTime = 0.5f;
-        WaitForSeconds cicleDelay = new WaitForSeconds(cicleDelayTime);
+        WaitForSeconds moveDelay = new WaitForSeconds(_moveDelayTime);
+        WaitForSeconds cicleDelay = new WaitForSeconds(_cicleDelayTime);
 
         while (enabled)
         {
@@ -51,7 +51,7 @@ public class Tutorial : MonoBehaviour
             while (_pointer.transform.localPosition != _target.localPosition)
             {
                 _pointer.transform.localPosition = Vector3.Lerp(_start.localPosition, _target.localPosition, moveProgress);
-                moveProgress += step;
+                moveProgress += _step;
                 yield return moveDelay;
             }
 
