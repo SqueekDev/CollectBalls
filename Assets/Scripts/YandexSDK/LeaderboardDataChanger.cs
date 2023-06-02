@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Agava.YandexGames;
 
-public class LeaderboardController : MonoBehaviour
+public class LeaderboardDataChanger : MonoBehaviour
 {
     [SerializeField] private GameObject _leaderboardPanel;
     [SerializeField] private LevelController _levelController;
