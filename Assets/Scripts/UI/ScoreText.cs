@@ -4,7 +4,7 @@ using TMPro;
 public class ScoreText : MonoBehaviour
 {
     [SerializeField] private CollectionField _collectionField;
-    [SerializeField] private LevelController _levelController;
+    [SerializeField] private LevelChanger _levelChanger;
     [SerializeField] private TMP_Text _score;
 
     private int _currentBallsCount;
@@ -13,13 +13,13 @@ public class ScoreText : MonoBehaviour
     private void OnEnable()
     {
         _collectionField.BallCollected += OnBallCollected;
-        _levelController.FieldChanged += OnFieldChanged;
+        _levelChanger.FieldChanged += OnFieldChanged;
     }
 
     private void OnDisable()
     {
         _collectionField.BallCollected -= OnBallCollected;
-        _levelController.FieldChanged -= OnFieldChanged;
+        _levelChanger.FieldChanged -= OnFieldChanged;
     }
 
     private void OnBallCollected(int currentBallsCount)

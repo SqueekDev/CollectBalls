@@ -4,7 +4,7 @@ using Lean.Localization;
 
 public class LevelText : MonoBehaviour
 {
-    [SerializeField] private LevelController _levelController;
+    [SerializeField] private LevelChanger _levelChanger;
     [SerializeField] private TMP_Text _level;
     [SerializeField] private LeanPhrase _phrase; 
 
@@ -12,7 +12,7 @@ public class LevelText : MonoBehaviour
 
     private void OnEnable()
     {
-        _levelController.LevelChanged += OnLevelChanged;
+        _levelChanger.LevelChanged += OnLevelChanged;
     }
 
     private void Start()
@@ -22,7 +22,7 @@ public class LevelText : MonoBehaviour
 
     private void OnDisable()
     {
-        _levelController.LevelChanged -= OnLevelChanged;
+        _levelChanger.LevelChanged -= OnLevelChanged;
     }
 
     private void OnLevelChanged(int levelNumber)

@@ -5,8 +5,11 @@ public class Timer : MonoBehaviour
 {
     private const float _rewardExtraTime = 20f;
     
-    [SerializeField] private LevelController _levelController;
+    [SerializeField] private LevelChanger _levelChanger;
+    [SerializeField] private GamePauser _gamePauser;
     [SerializeField] private AdShower _adShower;
+    [SerializeField] private GamePanel _lostPanel;
+    [SerializeField] private AudioSource _lostSound;
     [SerializeField] private float _startTime;
 
     private float _currentLevelTime;
@@ -17,32 +20,30 @@ public class Timer : MonoBehaviour
 
     public float CurrentTime => _time;
 
-    public event UnityAction Expired;
-    public event UnityAction Added;
-
     private void OnEnable()
     {
-        _levelController.LevelChanged += OnLevelChanged;
-        _levelController.LevelRestarted += OnLevelRestarted;
+        _levelChanger.LevelChanged += OnLevelChanged;
+        _levelChanger.LevelRestarted += OnLevelRestarted;
         _adShower.VideoAdShowed += OnVideoAdShowed;
     }
 
     private void OnDisable()
     {
-        _levelController.LevelChanged -= OnLevelChanged;        
-        _levelController.LevelRestarted -= OnLevelRestarted;
+        _levelChanger.LevelChanged -= OnLevelChanged;        
+        _levelChanger.LevelRestarted -= OnLevelRestarted;
         _adShower.VideoAdShowed -= OnVideoAdShowed;
     }
 
     private void Update()
     {
-        if (_levelController.IsPaused == false && _isCounting)
+        if (_gamePauser.IsPaused == false && _isCounting)
         {
             _time -= Time.deltaTime;
 
             if (_time <= 0)
             {
-                Expired?.Invoke();
+                _lostPanel.gameObject.SetActive(true);
+                _lostSound.Play();
                 _isCounting = false;
             }
         }
@@ -52,7 +53,7 @@ public class Timer : MonoBehaviour
     {
         _time += _rewardExtraTime;
         _isCounting = true;
-        Added?.Invoke();
+        _lostPanel.gameObject.SetActive(false);
     }
 
     private void OnLevelChanged(int levelNumber)

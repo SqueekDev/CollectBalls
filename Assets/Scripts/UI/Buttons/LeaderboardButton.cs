@@ -5,7 +5,7 @@ using Agava.YandexGames;
 public class LeaderboardButton : GameButton
 {
     [SerializeField] private GamePanel _loginPanel;
-    [SerializeField] private LevelController _levelController;
+    [SerializeField] private GamePauser _gamePauser;
 
     public event UnityAction AutorizationCompleted;
 
@@ -13,7 +13,7 @@ public class LeaderboardButton : GameButton
     {
         base.OnButtonClick();
 
-        if (_levelController.IsPaused == false)
+        if (_gamePauser.IsPaused == false)
         {
             if (PlayerAccount.IsAuthorized == false)
                 _loginPanel.gameObject.SetActive(true);
