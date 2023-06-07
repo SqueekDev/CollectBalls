@@ -4,7 +4,7 @@ using Agava.YandexGames;
 
 public class AdShower : MonoBehaviour
 {
-    [SerializeField] private LevelController _levelController;
+    [SerializeField] private LevelChanger _levelChanger;
     [SerializeField] private VideoButton _videoButton;
 
     private const int _numberToShowAd = 2;
@@ -15,13 +15,13 @@ public class AdShower : MonoBehaviour
 
     private void OnEnable()
     {
-        _levelController.LevelFinished += OnLevelFinished;
+        _levelChanger.LevelFinished += OnLevelFinished;
         _videoButton.Clicked += OnVideoButtonClick;
     }
 
     private void OnDisable()
     {
-        _levelController.LevelFinished -= OnLevelFinished;
+        _levelChanger.LevelFinished -= OnLevelFinished;
         _videoButton.Clicked -= OnVideoButtonClick;
     }
 

@@ -3,10 +3,10 @@ using UnityEngine;
 using UnityEngine.Events;
 using Agava.YandexGames;
 
-public class LeaderboardController : MonoBehaviour
+public class LeaderboardDataChanger : MonoBehaviour
 {
     [SerializeField] private GameObject _leaderboardPanel;
-    [SerializeField] private LevelController _levelController;
+    [SerializeField] private LevelChanger _levelChanger;
     [SerializeField] private LeaderboardButton _leaderboardButton;
     [SerializeField] private LoginAcceptButton _loginAcceptButton;
 
@@ -20,14 +20,14 @@ public class LeaderboardController : MonoBehaviour
 
     private void OnEnable()
     {
-        _levelController.LevelChanged += OnLevelChanged;
+        _levelChanger.LevelChanged += OnLevelChanged;
         _leaderboardButton.AutorizationCompleted += TryOpenPanel;
         _loginAcceptButton.ButtonClicked += TryOpenPanel;
     }
 
     private void OnDisable()
     {
-        _levelController.LevelChanged -= OnLevelChanged;
+        _levelChanger.LevelChanged -= OnLevelChanged;
         _leaderboardButton.AutorizationCompleted -= TryOpenPanel;
         _loginAcceptButton.ButtonClicked -= TryOpenPanel;
     }

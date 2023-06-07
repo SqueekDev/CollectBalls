@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class DataController : MonoBehaviour
+public class DataSaver : MonoBehaviour
 {
-    [SerializeField] private LevelController _levelController;
+    [SerializeField] private LevelChanger _levelChanger;
 
     private const string _levelNumberKey = "Level";
     private int _playerPrefsSavedLevelNumber = 0;
@@ -17,12 +17,12 @@ public class DataController : MonoBehaviour
 
     private void OnEnable()
     {
-        _levelController.LevelChanged += OnLevelChanged;
+        _levelChanger.LevelChanged += OnLevelChanged;
     }
 
     private void OnDisable()
     {
-        _levelController.LevelChanged -= OnLevelChanged;
+        _levelChanger.LevelChanged -= OnLevelChanged;
     }
 
     private void OnLevelChanged(int level)

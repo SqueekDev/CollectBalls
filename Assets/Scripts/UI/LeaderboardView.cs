@@ -5,7 +5,7 @@ using UnityEngine.Events;
 public class LeaderboardView : MonoBehaviour
 {
     [SerializeField] private LeaderboardPlayerView _template;
-    [SerializeField] private LeaderboardController _leaderboardController;
+    [SerializeField] private LeaderboardDataChanger _leaderboardDataChanger;
     [SerializeField] private GamePanel _loginPanel;
 
     private List<LeaderboardPlayerView> _leaderboardPlayerViews = new List<LeaderboardPlayerView>();
@@ -15,14 +15,14 @@ public class LeaderboardView : MonoBehaviour
 
     private void OnEnable()
     {
-        _leaderboardController.Created += OnCreated;
+        _leaderboardDataChanger.Created += OnCreated;
         _loginPanel.gameObject.SetActive(false);
         Opened?.Invoke();
     }
 
     private void OnDisable()
     {
-        _leaderboardController.Created -= OnCreated;
+        _leaderboardDataChanger.Created -= OnCreated;
         Closed?.Invoke();
     }
 
