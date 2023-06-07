@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class CollectionField : MonoBehaviour
 {
-    [SerializeField] private LevelController _levelController;
+    [SerializeField] private LevelChanger _levelChanger;
 
     private int _currentFieldBallsCount;
     private List<Ball> _collectedBalls = new List<Ball>();
@@ -14,12 +14,12 @@ public class CollectionField : MonoBehaviour
 
     private void OnEnable()
     {
-        _levelController.FieldChanged += OnFieldChanged;
+        _levelChanger.FieldChanged += OnFieldChanged;
     }
 
     private void OnDisable()
     {
-        _levelController.FieldChanged -= OnFieldChanged;
+        _levelChanger.FieldChanged -= OnFieldChanged;
     }
 
     private void OnFieldChanged(int ballsCount)

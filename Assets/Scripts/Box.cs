@@ -5,7 +5,7 @@ using UnityEngine;
 public class Box : MonoBehaviour
 {
     [SerializeField] private CollectionField _collectionField;
-    [SerializeField] private LevelController _levelController;
+    [SerializeField] private LevelChanger _levelChanger;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip _audioClip;
 
@@ -27,13 +27,13 @@ public class Box : MonoBehaviour
     private void OnEnable()
     {
         _collectionField.AllBallsCollected += OnAllBallCollected;
-        _levelController.LevelChanged += OnLevelChanged;
+        _levelChanger.LevelChanged += OnLevelChanged;
     }
 
     private void OnDisable()
     {
         _collectionField.AllBallsCollected -= OnAllBallCollected;
-        _levelController.LevelChanged -= OnLevelChanged;        
+        _levelChanger.LevelChanged -= OnLevelChanged;        
     }
 
     private void OnAllBallCollected()

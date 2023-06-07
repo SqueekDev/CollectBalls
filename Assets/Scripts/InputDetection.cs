@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 public class InputDetection : MonoBehaviour
 {
-    [SerializeField] private LevelController _levelController;
+    [SerializeField] private GamePauser _gamePauser;
     [SerializeField] private AudioSource _audioSource;
 
     private float _minSwipeValue = 30;
@@ -24,7 +24,7 @@ public class InputDetection : MonoBehaviour
 
     private void Update()
     {
-        if (_levelController.IsPaused == false)
+        if (_gamePauser.IsPaused == false)
         {
             if (_isMobile == false)
             {
