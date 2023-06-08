@@ -5,14 +5,15 @@ using Agava.YandexGames;
 
 public class LeaderboardDataChanger : MonoBehaviour
 {
+    private const string _leaderboardName = "Leaderboard";
+    private const int _minPlayersCount = 1;
+    private const int _maxPlayersCount = 5;
+
     [SerializeField] private GameObject _leaderboardPanel;
     [SerializeField] private LevelChanger _levelChanger;
     [SerializeField] private LeaderboardButton _leaderboardButton;
     [SerializeField] private LoginAcceptButton _loginAcceptButton;
 
-    private const string _leaderboardName = "Leaderboard";
-    private const int _minPlayersCount = 1;
-    private const int _maxPlayersCount = 5;
 
     private List<LeaderboardPlayer> _leaderboardPlayers = new List<LeaderboardPlayer>();
 

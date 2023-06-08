@@ -7,11 +7,9 @@ using UnityEngine.Events;
 public class LevelChanger : MonoBehaviour
 {
     [Header("Panels")]
-    [SerializeField] private GamePanel _startPanel;
     [SerializeField] private GamePanel _fihishPanel;
     [SerializeField] private Tutorial _tutorial;
     [Header("Buttons")]
-    [SerializeField] private Button _startButton;
     [SerializeField] private Button _restartLevelButton;
     [SerializeField] private RestartButton _restartButton;
     [SerializeField] private Button _nextLevelButton;
@@ -38,7 +36,6 @@ public class LevelChanger : MonoBehaviour
     {
         _dataSaver.LevelNumberLoaded += OnLevelNumberLoaded;
         _collectionField.AllBallsCollected += OnAllBallsCollected;
-        _startButton.onClick.AddListener(StartLevel);
         _restartLevelButton.onClick.AddListener(OnRestartLevelButtonClick);
         _nextLevelButton.onClick.AddListener(NextLevel);
         _restartButton.Clicked += RestartLevel;
@@ -46,18 +43,21 @@ public class LevelChanger : MonoBehaviour
 
     private void Start()
     {
-        _startPanel.gameObject.SetActive(true);
-        PanelOpened?.Invoke(true);
-
         if (_fields != null)
             ChangeLevel();
+
+        int turorialLevel = 1;
+
+        if (_currentLevelNumber == turorialLevel)
+            _tutorial.gameObject.SetActive(true);
+        else
+            _tutorial.gameObject.SetActive(false);
     }
 
     private void OnDisable()
     {
         _dataSaver.LevelNumberLoaded -= OnLevelNumberLoaded;
         _collectionField.AllBallsCollected -= OnAllBallsCollected;
-        _startButton.onClick.RemoveListener(StartLevel);
         _nextLevelButton.onClick.RemoveListener(NextLevel);
         _restartLevelButton.onClick.RemoveListener(OnRestartLevelButtonClick);
         _restartButton.Clicked -= RestartLevel;
@@ -93,19 +93,6 @@ public class LevelChanger : MonoBehaviour
         _winSound.Play();
         _fihishPanel.gameObject.SetActive(true);
         _fihishLevelCorutine = null;
-    }
-
-    private void StartLevel()
-    {
-        _clickSound.Play();
-        _startPanel.gameObject.SetActive(false);
-        PanelOpened?.Invoke(false);
-        int turorialLevel = 1;
-
-        if (_currentLevelNumber == turorialLevel)
-            _tutorial.gameObject.SetActive(true);
-        else
-            _tutorial.gameObject.SetActive(false);
     }
 
     private void OnRestartLevelButtonClick()

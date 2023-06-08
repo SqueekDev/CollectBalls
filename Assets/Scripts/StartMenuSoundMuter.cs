@@ -2,32 +2,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using Agava.WebUtility;
 
-public class SoundMuter : MonoBehaviour
+public class StartMenuSoundMuter : MonoBehaviour
 {
-    [SerializeField] private AdShower _adShower;
+    protected const float VolumeOff = 0f;
+    protected const float VolumeOn = 1f;
+
     [SerializeField] private MusicButton _soundButton;
     [SerializeField] private MusicButton _musicButton;
     [SerializeField] private AudioSource _musicSource;
     [SerializeField] private List<AudioSource> _soundSources;
 
-    private const float _volumeOff = 0f;
-    private const float _volumeOn = 1f;
-    private bool _adShowing = false;
-
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         _soundButton.Clicked += OnSoundButtonClick;
         _musicButton.Clicked += OnMusicButtonClick;
-        _adShower.AdShowing += OnAdShowed;
         WebApplication.InBackgroundChangeEvent += OnInBackgroundChange;
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         _soundButton.Clicked -= OnSoundButtonClick;
         _musicButton.Clicked -= OnMusicButtonClick;
-        _adShower.AdShowing -= OnAdShowed;
         WebApplication.InBackgroundChangeEvent -= OnInBackgroundChange;
+    }
+
+    protected virtual void OnInBackgroundChange(bool inBackground)
+    {
+        if (inBackground)
+        {
+            AudioListener.volume = VolumeOff;
+            AudioListener.pause = inBackground;
+        }
+        else
+        {
+            AudioListener.volume = VolumeOn;
+            AudioListener.pause = inBackground;
+        }
     }
 
     private void OnMusicButtonClick(bool isMuted)
@@ -46,26 +56,5 @@ public class SoundMuter : MonoBehaviour
         else
             foreach (var sound in _soundSources)
                 sound.mute = false;
-    }
-
-    private void OnInBackgroundChange(bool inBackground)
-    {
-        if (inBackground)
-        {
-            AudioListener.volume = _volumeOff;
-            AudioListener.pause = inBackground;
-        }
-        else if (_adShowing == false)
-        {
-            AudioListener.volume = _volumeOn;
-            AudioListener.pause = inBackground;
-        }
-    }
-
-    private void OnAdShowed(bool showing)
-    {
-        _adShowing = showing;
-        AudioListener.pause = showing;
-        AudioListener.volume = showing ? _volumeOff : _volumeOn;
     }
 }
