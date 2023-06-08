@@ -4,12 +4,13 @@ using UnityEngine.Events;
 
 public class MusicButton : GameButton
 {
-    [SerializeField] private Sprite _musicOnIcon;
-    [SerializeField] private Sprite _musicOffIcon;
-
     private const string _musicKeyName = "Music";
     private const int _falseValue = 0;
     private const int _trueValue = 1;
+
+    [SerializeField] private Sprite _musicOnIcon;
+    [SerializeField] private Sprite _musicOffIcon;
+
     private string _keyName;
     private bool _isMuted;
 

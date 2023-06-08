@@ -4,10 +4,11 @@ using Agava.YandexGames;
 
 public class AdShower : MonoBehaviour
 {
+    private const int _numberToShowAd = 2;
+
     [SerializeField] private LevelChanger _levelChanger;
     [SerializeField] private VideoButton _videoButton;
 
-    private const int _numberToShowAd = 2;
     private int _counter;
 
     public event UnityAction<bool> AdShowing;
