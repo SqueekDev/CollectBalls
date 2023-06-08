@@ -3,9 +3,10 @@ using UnityEngine.Events;
 
 public class DataSaver : MonoBehaviour
 {
+    private const string _levelNumberKey = "Level";
+
     [SerializeField] private LevelChanger _levelChanger;
 
-    private const string _levelNumberKey = "Level";
     private int _playerPrefsSavedLevelNumber = 0;
 
     public event UnityAction<int> LevelNumberLoaded;

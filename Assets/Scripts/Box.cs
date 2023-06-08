@@ -4,13 +4,14 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class Box : MonoBehaviour
 {
+    private const string _closeTriggerName = "Close";
+    private const string _openTriggerName = "Open";
+
     [SerializeField] private CollectionField _collectionField;
     [SerializeField] private LevelChanger _levelChanger;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip _audioClip;
 
-    private const string _closeTriggerName = "Close";
-    private const string _openTriggerName = "Open";
     private int _soundCounter = 0;
     private Animator _animator;
     private Vector3 _startPosition;

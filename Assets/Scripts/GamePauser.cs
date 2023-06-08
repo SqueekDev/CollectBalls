@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GamePauser : MonoBehaviour
@@ -7,7 +5,6 @@ public class GamePauser : MonoBehaviour
     [SerializeField] private LevelChanger _levelChanger;
     [SerializeField] private GamePanel _loginPanel;
     [SerializeField] private GamePanel _lostPanel;
-    [SerializeField] private GamePanel _startPanel;
     [SerializeField] private GamePanel _finishPanel;
     [SerializeField] private LeaderboardView _leaderboardPanel;
 
@@ -20,8 +17,6 @@ public class GamePauser : MonoBehaviour
         _loginPanel.Closed += OnPanelClosed;
         _lostPanel.Opened += OnPanelOpened;
         _lostPanel.Closed += OnPanelClosed;
-        _startPanel.Opened += OnPanelOpened;
-        _startPanel.Closed += OnPanelClosed;
         _finishPanel.Opened += OnPanelOpened;
         _finishPanel.Closed += OnPanelClosed;
         _leaderboardPanel.Opened += OnPanelOpened;
@@ -35,8 +30,6 @@ public class GamePauser : MonoBehaviour
         _loginPanel.Closed -= OnPanelClosed;
         _lostPanel.Opened -= OnPanelOpened;
         _lostPanel.Closed -= OnPanelClosed;
-        _startPanel.Opened -= OnPanelOpened;
-        _startPanel.Closed -= OnPanelClosed;
         _finishPanel.Opened -= OnPanelOpened;
         _finishPanel.Closed -= OnPanelClosed;
         _leaderboardPanel.Opened -= OnPanelOpened;

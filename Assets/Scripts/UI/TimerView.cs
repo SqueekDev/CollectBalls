@@ -3,13 +3,14 @@ using TMPro;
 
 public class TimerView : MonoBehaviour
 {
+    private const int _secondsInMinute = 60;
+    private const float _timeToChangeColor = 6f;
+
     [SerializeField] private TMP_Text _view;
     [SerializeField] private Timer _timer;
     [SerializeField] private Color _startTimeColor;
     [SerializeField] private Color _changedTimeColor;
 
-    private const int _secondsInMinute = 60;
-    private const float _timeToChangeColor = 6f;
     private int _seconds;
     private int _minutes;
 
