@@ -4,8 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class Box : MonoBehaviour
 {
-    private const string _closeTriggerName = "Close";
-    private const string _openTriggerName = "Open";
+    private const string CloseTriggerName = "Close";
+    private const string OpenTriggerName = "Open";
 
     [SerializeField] private CollectionField _collectionField;
     [SerializeField] private LevelChanger _levelChanger;
@@ -45,7 +45,7 @@ public class Box : MonoBehaviour
 
     private void OnLevelChanged(int levelNumber)
     {
-        _animator.SetTrigger(_openTriggerName);
+        _animator.SetTrigger(OpenTriggerName);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -77,7 +77,7 @@ public class Box : MonoBehaviour
     {
         float delayTime = 1f;
         yield return new WaitForSeconds(delayTime);
-        _animator.SetTrigger(_closeTriggerName);
+        _animator.SetTrigger(CloseTriggerName);
         _closeCorutine = null;
     }
 

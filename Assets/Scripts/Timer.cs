@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 public class Timer : MonoBehaviour
 {
-    private const float _rewardExtraTime = 20f;
+    private const float RewardExtraTime = 20f;
     
     [SerializeField] private LevelChanger _levelChanger;
     [SerializeField] private GamePauser _gamePauser;
@@ -51,7 +51,7 @@ public class Timer : MonoBehaviour
 
     private void OnVideoAdShowed()
     {
-        _time += _rewardExtraTime;
+        _time += RewardExtraTime;
         _isCounting = true;
         _lostPanel.gameObject.SetActive(false);
     }

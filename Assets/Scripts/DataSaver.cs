@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 public class DataSaver : MonoBehaviour
 {
-    private const string _levelNumberKey = "Level";
+    private const string LevelNumberKey = "Level";
 
     [SerializeField] private LevelChanger _levelChanger;
 
@@ -13,7 +13,7 @@ public class DataSaver : MonoBehaviour
 
     private void Awake()
     {
-        _playerPrefsSavedLevelNumber = PlayerPrefs.GetInt(_levelNumberKey, 0);
+        _playerPrefsSavedLevelNumber = PlayerPrefs.GetInt(LevelNumberKey, 0);
     }
 
     private void OnEnable()
@@ -39,7 +39,7 @@ public class DataSaver : MonoBehaviour
         else
         {
             _playerPrefsSavedLevelNumber = level;
-            PlayerPrefs.SetInt(_levelNumberKey, _playerPrefsSavedLevelNumber);
+            PlayerPrefs.SetInt(LevelNumberKey, _playerPrefsSavedLevelNumber);
             PlayerPrefs.Save();
         }    
     }

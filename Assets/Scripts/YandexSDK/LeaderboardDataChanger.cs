@@ -5,9 +5,9 @@ using Agava.YandexGames;
 
 public class LeaderboardDataChanger : MonoBehaviour
 {
-    private const string _leaderboardName = "Leaderboard";
-    private const int _minPlayersCount = 1;
-    private const int _maxPlayersCount = 5;
+    private const string LeaderboardName = "Leaderboard";
+    private const int MinPlayersCount = 1;
+    private const int MaxPlayersCount = 5;
 
     [SerializeField] private GameObject _leaderboardPanel;
     [SerializeField] private LevelChanger _levelChanger;
@@ -38,10 +38,10 @@ public class LeaderboardDataChanger : MonoBehaviour
         if (PlayerAccount.IsAuthorized == false)
             return;
 
-        Leaderboard.GetPlayerEntry(_leaderboardName, (result) =>
+        Leaderboard.GetPlayerEntry(LeaderboardName, (result) =>
         {
             if (result == null || result.score < level)
-                Leaderboard.SetScore(_leaderboardName, level);
+                Leaderboard.SetScore(LeaderboardName, level);
         });
     }
 
@@ -65,10 +65,10 @@ public class LeaderboardDataChanger : MonoBehaviour
             return;
 
         _leaderboardPlayers.Clear();
-        Leaderboard.GetEntries(_leaderboardName, result =>
+        Leaderboard.GetEntries(LeaderboardName, result =>
         {
             int results = result.entries.Length;
-            results = Mathf.Clamp(results, _minPlayersCount, _maxPlayersCount);
+            results = Mathf.Clamp(results, MinPlayersCount, MaxPlayersCount);
 
             for (int i = 0; i < results; i++)
             {

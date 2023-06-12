@@ -5,10 +5,11 @@ using Lean.Localization;
 
 public class VideoButton : GameButton
 {
+    private const string AddedSeconds = "+20";
+
     [SerializeField] private TMP_Text _view;
     [SerializeField] private LeanPhrase _phrase;
 
-    private const string _addedSeconds = "+20";
     private string _text;
 
     public event UnityAction Clicked;
@@ -17,7 +18,7 @@ public class VideoButton : GameButton
     {
         Button.onClick.AddListener(OnButtonClick);
         _text = LeanLocalization.GetTranslationText(_phrase.name);
-        _view.text = $"{_addedSeconds} {_text}";
+        _view.text = $"{AddedSeconds} {_text}";
     }
 
     protected override void OnButtonClick()

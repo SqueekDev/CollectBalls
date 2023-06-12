@@ -3,8 +3,8 @@ using TMPro;
 
 public class TimerView : MonoBehaviour
 {
-    private const int _secondsInMinute = 60;
-    private const float _timeToChangeColor = 6f;
+    private const int SecondsInMinute = 60;
+    private const float TimeToChangeColor = 6f;
 
     [SerializeField] private TMP_Text _view;
     [SerializeField] private Timer _timer;
@@ -16,11 +16,11 @@ public class TimerView : MonoBehaviour
 
     private void Update()
     {
-        _minutes = (int)_timer.CurrentTime / _secondsInMinute;
-        _seconds = (int)_timer.CurrentTime - _minutes * _secondsInMinute;
+        _minutes = (int)_timer.CurrentTime / SecondsInMinute;
+        _seconds = (int)_timer.CurrentTime - _minutes * SecondsInMinute;
         _view.text = _seconds.ToString().Length == 1 ? $"{_minutes} : 0{_seconds}" : $"{_minutes} : {_seconds}";
 
-        if (_timer.CurrentTime > _timeToChangeColor)
+        if (_timer.CurrentTime > TimeToChangeColor)
             _view.color = _startTimeColor;
         else
             _view.color = _changedTimeColor;

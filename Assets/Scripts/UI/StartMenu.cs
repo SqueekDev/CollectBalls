@@ -8,14 +8,14 @@ public class StartMenu : MonoBehaviour
     [SerializeField] private Button _startButton;
     [SerializeField] private AudioSource _clickSound;
 
-    private void Start()
-    {
-        _startPanel.gameObject.SetActive(true);
-    }
-
     private void OnEnable()
     {
         _startButton.onClick.AddListener(StartLevel);
+    }
+
+    private void Start()
+    {
+        _startPanel.gameObject.SetActive(true);
     }
 
     private void OnDisable()

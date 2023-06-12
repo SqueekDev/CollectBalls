@@ -4,7 +4,7 @@ using Agava.YandexGames;
 
 public class AdShower : MonoBehaviour
 {
-    private const int _numberToShowAd = 2;
+    private const int NumberToShowAd = 2;
 
     [SerializeField] private LevelChanger _levelChanger;
     [SerializeField] private VideoButton _videoButton;
@@ -28,7 +28,7 @@ public class AdShower : MonoBehaviour
 
     private void OnLevelFinished()
     {
-        if (_counter < _numberToShowAd)
+        if (_counter < NumberToShowAd)
         {
             _counter++;
         }

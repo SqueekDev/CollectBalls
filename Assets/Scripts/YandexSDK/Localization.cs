@@ -4,12 +4,12 @@ using Lean.Localization;
 
 public class Localization : MonoBehaviour
 {
-    private const string _englishCode = "en";
-    private const string _russianCode = "ru";
-    private const string _turkishCode = "tr";
-    private const string _english = "English";
-    private const string _russian = "Russian";
-    private const string _turkish = "Turkish";
+    private const string EnglishCode = "en";
+    private const string RussianCode = "ru";
+    private const string TurkishCode = "tr";
+    private const string English = "English";
+    private const string Russian = "Russian";
+    private const string Turkish = "Turkish";
 
     private void OnEnable()
     {
@@ -17,17 +17,19 @@ public class Localization : MonoBehaviour
 
         if (language != null)
         {
-            if (language == _englishCode)
-                LeanLocalization.SetCurrentLanguageAll(_english);
-            else if (language == _russianCode)
-                LeanLocalization.SetCurrentLanguageAll(_russian);
-            else if (language == _turkishCode)
-                LeanLocalization.SetCurrentLanguageAll(_turkish);
+            if (language == EnglishCode)
+                LeanLocalization.SetCurrentLanguageAll(English);
+            else if (language == RussianCode)
+                LeanLocalization.SetCurrentLanguageAll(Russian);
+            else if (language == TurkishCode)
+                LeanLocalization.SetCurrentLanguageAll(Turkish);
             else
-                LeanLocalization.SetCurrentLanguageAll(_english);
+                LeanLocalization.SetCurrentLanguageAll(English);
         }
         else
-            LeanLocalization.SetCurrentLanguageAll(_english);
+        {
+            LeanLocalization.SetCurrentLanguageAll(English);
+        }
 
         LeanLocalization.UpdateTranslations();
     }

@@ -1,9 +1,9 @@
 public class SoundButton : MusicButton
 {
-    private const string _soundKeyName = "Sound";
+    private const string SoundKeyName = "Sound";
 
     protected override string GetKeyName()
     {
-        return _soundKeyName;
+        return SoundKeyName;
     }
 }

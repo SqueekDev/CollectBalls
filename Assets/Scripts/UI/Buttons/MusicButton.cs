@@ -4,9 +4,9 @@ using UnityEngine.Events;
 
 public class MusicButton : GameButton
 {
-    private const string _musicKeyName = "Music";
-    private const int _falseValue = 0;
-    private const int _trueValue = 1;
+    private const string MusicKeyName = "Music";
+    private const int FalseValue = 0;
+    private const int TrueValue = 1;
 
     [SerializeField] private Sprite _musicOnIcon;
     [SerializeField] private Sprite _musicOffIcon;
@@ -19,8 +19,8 @@ public class MusicButton : GameButton
     private void Awake()
     {
         _keyName = GetKeyName();
-        Button.image.sprite = PlayerPrefs.GetInt(_keyName, _falseValue) == _trueValue ? _musicOffIcon : _musicOnIcon;
-        _isMuted = PlayerPrefs.GetInt(_keyName, _falseValue) == _trueValue;
+        Button.image.sprite = PlayerPrefs.GetInt(_keyName, FalseValue) == TrueValue ? _musicOffIcon : _musicOnIcon;
+        _isMuted = PlayerPrefs.GetInt(_keyName, FalseValue) == TrueValue;
         Clicked?.Invoke(_isMuted);
     }
 
@@ -46,12 +46,12 @@ public class MusicButton : GameButton
 
     protected virtual string GetKeyName()
     {
-        return _musicKeyName;
+        return MusicKeyName;
     }
 
     private void SaveData(bool isMuted)
     {
-        int value = isMuted ? _trueValue : _falseValue;
+        int value = isMuted ? TrueValue : FalseValue;
         PlayerPrefs.SetInt(_keyName, value);
         PlayerPrefs.Save();
     }
