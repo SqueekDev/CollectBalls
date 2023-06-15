@@ -27,6 +27,7 @@ public class LevelChanger : MonoBehaviour
     private Coroutine _fihishLevelCorutine;
 
     public event UnityAction<int> FieldChanged;
+    public event UnityAction<int> FieldSizeChanged;
     public event UnityAction<int> LevelChanged;
     public event UnityAction<bool> PanelOpened;
     public event UnityAction LevelFinished;
@@ -135,6 +136,7 @@ public class LevelChanger : MonoBehaviour
             Destroy(_currentField.gameObject);
 
         _currentField = Instantiate(_fields[fieldIndex], transform.position + _fields[fieldIndex].transform.localPosition, Quaternion.identity, transform);
+        FieldSizeChanged?.Invoke(_currentField.FieldSizeModifier);
         FieldChanged?.Invoke(_currentField.BallsCount);
     }
 }
