@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Field : MonoBehaviour
 {
+    [SerializeField] private int _fieldSizeModifier;
     [SerializeField] private List<CellBlock> _cellBlocks;
     [SerializeField] private List<Grille> _grilles;
     [SerializeField] private List<Material> _matherials;
@@ -15,10 +16,12 @@ public class Field : MonoBehaviour
     private float _step = 0.2f;
     
     public int BallsCount { get; private set; }
+    public int FieldSizeModifier { get; private set; }
 
     private void Awake()
     {
         _startRotation = transform.rotation;
+        FieldSizeModifier = _fieldSizeModifier;
 
         for (int i = 0; i < _cellBlocks.Count; i++)
         {
