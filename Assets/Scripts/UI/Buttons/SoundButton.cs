@@ -1,9 +1,12 @@
-public class SoundButton : MusicButton
+namespace UI
 {
-    private const string SoundKeyName = "Sound";
-
-    protected override string GetKeyName()
+    public class SoundButton : MusicButton
     {
-        return SoundKeyName;
+        private const string SoundKeyName = "Sound";
+
+        protected override string GetKeyName()
+        {
+            return SoundKeyName;
+        }
     }
 }

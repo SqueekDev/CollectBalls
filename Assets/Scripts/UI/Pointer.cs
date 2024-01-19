@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public class Pointer : MonoBehaviour
+namespace UI
 {
+    public class Pointer : MonoBehaviour
+    {
+    }
 }

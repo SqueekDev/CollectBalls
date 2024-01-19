@@ -2,30 +2,33 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class StartMenu : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private GamePanel _startPanel;
-    [SerializeField] private Button _startButton;
-    [SerializeField] private AudioSource _clickSound;
-
-    private void OnEnable()
+    public class StartMenu : MonoBehaviour
     {
-        _startButton.onClick.AddListener(StartLevel);
-    }
+        [SerializeField] private GamePanel _startPanel;
+        [SerializeField] private Button _startButton;
+        [SerializeField] private AudioSource _clickSound;
 
-    private void Start()
-    {
-        _startPanel.gameObject.SetActive(true);
-    }
+        private void OnEnable()
+        {
+            _startButton.onClick.AddListener(StartLevel);
+        }
 
-    private void OnDisable()
-    {
-        _startButton.onClick.RemoveListener(StartLevel);
-    }
+        private void Start()
+        {
+            _startPanel.gameObject.SetActive(true);
+        }
 
-    private void StartLevel()
-    {
-        _clickSound.Play();
-        SceneManager.LoadScene(2);
+        private void OnDisable()
+        {
+            _startButton.onClick.RemoveListener(StartLevel);
+        }
+
+        private void StartLevel()
+        {
+            _clickSound.Play();
+            SceneManager.LoadScene(2);
+        }
     }
 }

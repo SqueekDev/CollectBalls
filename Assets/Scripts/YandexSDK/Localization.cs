@@ -1,36 +1,42 @@
-using UnityEngine;
 using Agava.YandexGames;
 using Lean.Localization;
+using UnityEngine;
 
-public class Localization : MonoBehaviour
+namespace YandexSDK
 {
-    private const string EnglishCode = "en";
-    private const string RussianCode = "ru";
-    private const string TurkishCode = "tr";
-    private const string English = "English";
-    private const string Russian = "Russian";
-    private const string Turkish = "Turkish";
-
-    private void OnEnable()
+    public class Localization : MonoBehaviour
     {
-        string language = YandexGamesSdk.Environment.i18n.lang;
+        private const string EnglishCode = "en";
+        private const string RussianCode = "ru";
+        private const string TurkishCode = "tr";
+        private const string English = "English";
+        private const string Russian = "Russian";
+        private const string Turkish = "Turkish";
 
-        if (language != null)
-        {
-            if (language == EnglishCode)
-                LeanLocalization.SetCurrentLanguageAll(English);
-            else if (language == RussianCode)
-                LeanLocalization.SetCurrentLanguageAll(Russian);
-            else if (language == TurkishCode)
-                LeanLocalization.SetCurrentLanguageAll(Turkish);
-            else
-                LeanLocalization.SetCurrentLanguageAll(English);
-        }
-        else
-        {
-            LeanLocalization.SetCurrentLanguageAll(English);
-        }
+        private string _language;
 
-        LeanLocalization.UpdateTranslations();
+        private void OnEnable()
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            _language = YandexGamesSdk.Environment.i18n.lang;
+#endif
+            switch (_language)
+            {
+                case EnglishCode:
+                    LeanLocalization.SetCurrentLanguageAll(English);
+                    break;
+                case RussianCode:
+                    LeanLocalization.SetCurrentLanguageAll(Russian);
+                    break;
+                case TurkishCode:
+                    LeanLocalization.SetCurrentLanguageAll(Turkish);
+                    break;
+                default:
+                    LeanLocalization.SetCurrentLanguageAll(English);
+                    break;
+            }
+
+            LeanLocalization.UpdateTranslations();
+        }
     }
 }

@@ -1,67 +1,73 @@
 using System.Collections;
+using Level;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Tutorial : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private CollectionField _collectionField;
-    [SerializeField] private Button _leaderboardButton;
-    [SerializeField] private Button _restartButton;
-    [SerializeField] private Pointer _pointer;
-    [SerializeField] private Transform _start;
-    [SerializeField] private Transform _target;
-
-    private Coroutine _moveCorutine;
-    private float _step = 0.1f;
-    private float _moveDelayTime = 0.05f;
-    private float _cicleDelayTime = 0.5f;
-
-    private void OnEnable()
+    public class Tutorial : MonoBehaviour
     {
-        _leaderboardButton.interactable = false;
-        _restartButton.interactable = false;
-        _collectionField.BallCollected += OnBallCollected;
-        CheckCorutine();
-        _moveCorutine = StartCoroutine(MovePointer());
-    }
+        [SerializeField] private CollectionField _collectionField;
+        [SerializeField] private Button _leaderboardButton;
+        [SerializeField] private Button _restartButton;
+        [SerializeField] private Pointer _pointer;
+        [SerializeField] private Transform _start;
+        [SerializeField] private Transform _target;
 
-    private void OnDisable()
-    {
-        _leaderboardButton.interactable = true;
-        _restartButton.interactable = true;
-        _collectionField.BallCollected -= OnBallCollected;
-        CheckCorutine();
-    }
+        private Coroutine _moveCorutine;
+        private float _step = 0.1f;
+        private float _moveDelayTime = 0.05f;
+        private float _cicleDelayTime = 0.5f;
 
-    private void OnBallCollected(int count)
-    {
-        transform.gameObject.SetActive(false);
-    }
-
-    private IEnumerator MovePointer()
-    {
-        WaitForSeconds moveDelay = new WaitForSeconds(_moveDelayTime);
-        WaitForSeconds cicleDelay = new WaitForSeconds(_cicleDelayTime);
-
-        while (enabled)
+        private void OnEnable()
         {
-            float moveProgress = 0;
-            _pointer.transform.localPosition = _start.localPosition;
+            _leaderboardButton.interactable = false;
+            _restartButton.interactable = false;
+            _collectionField.BallCollected += OnBallCollected;
+            CheckCorutine();
+            _moveCorutine = StartCoroutine(MovePointer());
+        }
 
-            while (_pointer.transform.localPosition != _target.localPosition)
+        private void OnDisable()
+        {
+            _leaderboardButton.interactable = true;
+            _restartButton.interactable = true;
+            _collectionField.BallCollected -= OnBallCollected;
+            CheckCorutine();
+        }
+
+        private IEnumerator MovePointer()
+        {
+            WaitForSeconds moveDelay = new WaitForSeconds(_moveDelayTime);
+            WaitForSeconds cicleDelay = new WaitForSeconds(_cicleDelayTime);
+
+            while (enabled)
             {
-                _pointer.transform.localPosition = Vector3.Lerp(_start.localPosition, _target.localPosition, moveProgress);
-                moveProgress += _step;
-                yield return moveDelay;
+                float moveProgress = 0;
+                _pointer.transform.localPosition = _start.localPosition;
+
+                while (_pointer.transform.localPosition != _target.localPosition)
+                {
+                    _pointer.transform.localPosition = Vector3.Lerp(_start.localPosition, _target.localPosition, moveProgress);
+                    moveProgress += _step;
+                    yield return moveDelay;
+                }
+
+                yield return cicleDelay;
             }
+        }
 
-            yield return cicleDelay;
-        }        
-    }
+        private void CheckCorutine()
+        {
+            if (_moveCorutine != null)
+            {
+                StopCoroutine(_moveCorutine);
+            }
+        }
 
-    private void CheckCorutine()
-    {
-        if (_moveCorutine != null)
-            StopCoroutine(_moveCorutine);
+        private void OnBallCollected(int count)
+        {
+            transform.gameObject.SetActive(false);
+        }
     }
 }

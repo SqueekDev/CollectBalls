@@ -1,88 +1,106 @@
+using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
 using Agava.YandexGames;
+using Controller;
+using UnityEngine;
+using UI;
 
-public class LeaderboardDataChanger : MonoBehaviour
+namespace YandexSDK
 {
-    private const string LeaderboardName = "Leaderboard";
-    private const int MinPlayersCount = 1;
-    private const int MaxPlayersCount = 5;
-
-    [SerializeField] private GameObject _leaderboardPanel;
-    [SerializeField] private LevelChanger _levelChanger;
-    [SerializeField] private LeaderboardButton _leaderboardButton;
-    [SerializeField] private LoginAcceptButton _loginAcceptButton;
-
-
-    private List<LeaderboardPlayer> _leaderboardPlayers = new List<LeaderboardPlayer>();
-
-    public UnityAction<List<LeaderboardPlayer>> Created;
-
-    private void OnEnable()
+    public class LeaderboardDataChanger : MonoBehaviour
     {
-        _levelChanger.LevelChanged += OnLevelChanged;
-        _leaderboardButton.AutorizationCompleted += TryOpenPanel;
-        _loginAcceptButton.ButtonClicked += TryOpenPanel;
-    }
+        private const string LeaderboardName = "Leaderboard";
+        private const int MinPlayersCount = 1;
+        private const int MaxPlayersCount = 5;
 
-    private void OnDisable()
-    {
-        _levelChanger.LevelChanged -= OnLevelChanged;
-        _leaderboardButton.AutorizationCompleted -= TryOpenPanel;
-        _loginAcceptButton.ButtonClicked -= TryOpenPanel;
-    }
+        [SerializeField] private GameObject _leaderboardPanel;
+        [SerializeField] private LevelChanger _levelChanger;
+        [SerializeField] private LeaderboardButton _leaderboardButton;
+        [SerializeField] private LoginAcceptButton _loginAcceptButton;
 
-    private void OnLevelChanged(int level)
-    {
-        if (PlayerAccount.IsAuthorized == false)
-            return;
+        private List<LeaderboardPlayer> _leaderboardPlayers = new List<LeaderboardPlayer>();
 
-        Leaderboard.GetPlayerEntry(LeaderboardName, (result) =>
+        public Action<List<LeaderboardPlayer>> Created;
+
+        private void OnEnable()
         {
-            if (result == null || result.score < level)
-                Leaderboard.SetScore(LeaderboardName, level);
-        });
-    }
+            _levelChanger.LevelChanged += OnLevelChanged;
+            _leaderboardButton.AutorizationCompleted += TryOpenPanel;
+            _loginAcceptButton.ButtonClicked += TryOpenPanel;
+        }
 
-    private void TryOpenPanel()
-    {
-        PlayerAccount.Authorize();
-
-        if (PlayerAccount.IsAuthorized)
-            PlayerAccount.RequestPersonalProfileDataPermission();
-
-        if (PlayerAccount.IsAuthorized == false)
-            return;
-
-        _leaderboardPanel.SetActive(true);
-        FillTable();
-    }
-
-    private void FillTable()
-    {
-        if (PlayerAccount.IsAuthorized == false)
-            return;
-
-        _leaderboardPlayers.Clear();
-        Leaderboard.GetEntries(LeaderboardName, result =>
+        private void OnDisable()
         {
-            int results = result.entries.Length;
-            results = Mathf.Clamp(results, MinPlayersCount, MaxPlayersCount);
+            _levelChanger.LevelChanged -= OnLevelChanged;
+            _leaderboardButton.AutorizationCompleted -= TryOpenPanel;
+            _loginAcceptButton.ButtonClicked -= TryOpenPanel;
+        }
 
-            for (int i = 0; i < results; i++)
+        private void TryOpenPanel()
+        {
+            PlayerAccount.Authorize();
+
+            if (PlayerAccount.IsAuthorized)
             {
-                string number = (i + 1).ToString();
-                string level = result.entries[i].score.ToString();
-                string playerName = result.entries[i].player.publicName;
-
-                if (string.IsNullOrEmpty(playerName))
-                    playerName = "Anonymous";
-
-                _leaderboardPlayers.Add(new LeaderboardPlayer(number, playerName, level));
+                PlayerAccount.RequestPersonalProfileDataPermission();
             }
 
-            Created?.Invoke(_leaderboardPlayers);
-        });
+            if (PlayerAccount.IsAuthorized == false)
+            {
+                return;
+            }
+
+            _leaderboardPanel.SetActive(true);
+            FillTable();
+        }
+
+        private void FillTable()
+        {
+            if (PlayerAccount.IsAuthorized == false)
+            {
+                return;
+            }
+
+            _leaderboardPlayers.Clear();
+            Leaderboard.GetEntries(LeaderboardName, result =>
+            {
+                int results = result.entries.Length;
+                results = Mathf.Clamp(results, MinPlayersCount, MaxPlayersCount);
+
+                for (int i = 0; i < results; i++)
+                {
+                    string number = (i + 1).ToString();
+                    string level = result.entries[i].score.ToString();
+                    string playerName = result.entries[i].player.publicName;
+
+                    if (string.IsNullOrEmpty(playerName))
+                    {
+                        playerName = "Anonymous";
+                    }
+
+                    _leaderboardPlayers.Add(new LeaderboardPlayer(number, playerName, level));
+                }
+
+                Created?.Invoke(_leaderboardPlayers);
+            });
+        }
+
+        private void OnLevelChanged(int level)
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            if (PlayerAccount.IsAuthorized == false)
+            {
+                return;
+            }
+
+            Leaderboard.GetPlayerEntry(LeaderboardName, (result) =>
+            {
+                if (result == null || result.score < level)
+                {
+                    Leaderboard.SetScore(LeaderboardName, level);
+                }
+            });
+#endif
+        }
     }
 }

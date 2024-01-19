@@ -1,32 +1,35 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(AudioSource))]
-public class GameButton : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private Button _button;
-
-    private AudioSource _audioSource;
-
-    protected Button Button => _button;
-
-    private void OnEnable()
+    [RequireComponent(typeof(AudioSource))]
+    public class GameButton : MonoBehaviour
     {
-        _button.onClick.AddListener(OnButtonClick);
-    }
+        [SerializeField] private Button _button;
 
-    private void Start()
-    {
-        _audioSource = GetComponent<AudioSource>();
-    }
+        private AudioSource _audioSource;
 
-    private void OnDisable()
-    {
-        _button.onClick.RemoveListener(OnButtonClick);
-    }
+        protected Button Button => _button;
 
-    protected virtual void OnButtonClick()
-    {
-        _audioSource.Play();
+        private void OnEnable()
+        {
+            _button.onClick.AddListener(OnButtonClick);
+        }
+
+        private void Start()
+        {
+            _audioSource = GetComponent<AudioSource>();
+        }
+
+        private void OnDisable()
+        {
+            _button.onClick.RemoveListener(OnButtonClick);
+        }
+
+        protected virtual void OnButtonClick()
+        {
+            _audioSource.Play();
+        }
     }
 }

@@ -1,32 +1,37 @@
-using UnityEngine;
-using TMPro;
+using Controller;
 using Lean.Localization;
+using TMPro;
+using UnityEngine;
 
-public class LevelText : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private LevelChanger _levelChanger;
-    [SerializeField] private TMP_Text _level;
-    [SerializeField] private LeanPhrase _phrase; 
-
-    private string _text;
-
-    private void OnEnable()
+    public class LevelText : MonoBehaviour
     {
-        _levelChanger.LevelChanged += OnLevelChanged;
-    }
+        [SerializeField] private LevelChanger _levelChanger;
+        [SerializeField] private TMP_Text _level;
+        [SerializeField] private LeanPhrase _phrase;
 
-    private void Start()
-    {
-        _text = LeanLocalization.GetTranslationText(_phrase.name);
-    }
+        private string _text;
 
-    private void OnDisable()
-    {
-        _levelChanger.LevelChanged -= OnLevelChanged;
-    }
+        private void OnEnable()
+        {
+            _levelChanger.LevelChanged += OnLevelChanged;
+        }
 
-    private void OnLevelChanged(int levelNumber)
-    {
-        _level.text = $"{_text} {levelNumber}";
+        private void Start()
+        {
+            _text = LeanLocalization.GetTranslationText(_phrase.name);
+        }
+
+        private void OnDisable()
+        {
+            _levelChanger.LevelChanged -= OnLevelChanged;
+        }
+
+        private void OnLevelChanged(int levelNumber)
+        {
+            string text = $"{_text} {levelNumber}";
+            _level.text = text;
+        }
     }
 }

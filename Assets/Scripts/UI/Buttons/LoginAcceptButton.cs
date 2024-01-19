@@ -1,12 +1,15 @@
-using UnityEngine.Events;
+using System;
 
-public class LoginAcceptButton : GameButton
+namespace UI
 {
-    public event UnityAction ButtonClicked;
-
-    protected override void OnButtonClick()
+    public class LoginAcceptButton : GameButton
     {
-        base.OnButtonClick();
-        ButtonClicked?.Invoke();
+        public event Action ButtonClicked;
+
+        protected override void OnButtonClick()
+        {
+            base.OnButtonClick();
+            ButtonClicked?.Invoke();
+        }
     }
 }

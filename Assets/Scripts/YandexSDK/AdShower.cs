@@ -1,69 +1,79 @@
-using UnityEngine;
-using UnityEngine.Events;
+using System;
 using Agava.YandexGames;
+using Controller;
+using UI;
+using UnityEngine;
 
-public class AdShower : MonoBehaviour
+namespace YandexSDK
 {
-    private const int NumberToShowAd = 2;
-
-    [SerializeField] private LevelChanger _levelChanger;
-    [SerializeField] private VideoButton _videoButton;
-
-    private int _counter;
-
-    public event UnityAction<bool> AdShowing;
-    public event UnityAction VideoAdShowed;
-
-    private void OnEnable()
+    public class AdShower : MonoBehaviour
     {
-        _levelChanger.LevelFinished += OnLevelFinished;
-        _videoButton.Clicked += OnVideoButtonClick;
-    }
+        private const int NumberToShowAd = 2;
 
-    private void OnDisable()
-    {
-        _levelChanger.LevelFinished -= OnLevelFinished;
-        _videoButton.Clicked -= OnVideoButtonClick;
-    }
+        [SerializeField] private LevelChanger _levelChanger;
+        [SerializeField] private VideoButton _videoButton;
 
-    private void OnLevelFinished()
-    {
-        if (_counter < NumberToShowAd)
+        private int _counter;
+
+        public event Action<bool> AdShowing;
+
+        public event Action VideoAdShowed;
+
+        private void OnEnable()
         {
-            _counter++;
+            _levelChanger.LevelFinished += OnLevelFinished;
+            _videoButton.Clicked += OnVideoButtonClick;
         }
-        else
+
+        private void OnDisable()
         {
-            InterstitialAd.Show(OnOpenCallBack, OnCloseCallBack);
-            _counter = 0;
+            _levelChanger.LevelFinished -= OnLevelFinished;
+            _videoButton.Clicked -= OnVideoButtonClick;
         }
-    }
 
-    private void OnVideoButtonClick()
-    {
-        VideoAd.Show(OnOpenCallBack, OnRewardCallBack, OnCloseCallback);
-    }
+        private void OnLevelFinished()
+        {
+            if (_counter < NumberToShowAd)
+            {
+                _counter++;
+            }
+            else
+            {
+#if UNITY_WEBGL && !UNITY_EDITOR
+                InterstitialAd.Show(OnOpenCallBack, OnCloseCallBack);
+#endif
+                _counter = 0;
+            }
+        }
 
-    private void OnOpenCallBack()
-    {
-        Time.timeScale = 0;
-        AdShowing?.Invoke(true);
-    }
+        private void OnVideoButtonClick()
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            VideoAd.Show(OnOpenCallBack, OnRewardCallBack, OnCloseCallback);
+#endif
+        }
 
-    private void OnRewardCallBack()
-    {
-        VideoAdShowed?.Invoke();
-    }
+        private void OnOpenCallBack()
+        {
+            Time.timeScale = 0;
+            AdShowing?.Invoke(true);
+        }
 
-    private void OnCloseCallback()
-    {
-        Time.timeScale = 1;
-        AdShowing?.Invoke(false);
-    }
+        private void OnRewardCallBack()
+        {
+            VideoAdShowed?.Invoke();
+        }
 
-    private void OnCloseCallBack(bool state)
-    {
-        Time.timeScale = 1;
-        AdShowing?.Invoke(false);
+        private void OnCloseCallback()
+        {
+            Time.timeScale = 1;
+            AdShowing?.Invoke(false);
+        }
+
+        private void OnCloseCallBack(bool state)
+        {
+            Time.timeScale = 1;
+            AdShowing?.Invoke(false);
+        }
     }
 }

@@ -1,16 +1,19 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class RestartButton : GameButton
+namespace UI
 {
-    [SerializeField] private GamePanel _panel;
-
-    public event UnityAction Clicked;
-
-    protected override void OnButtonClick()
+    public class RestartButton : GameButton
     {
-        base.OnButtonClick();
-        Clicked?.Invoke();
-        _panel.gameObject.SetActive(false);
+        [SerializeField] private GamePanel _panel;
+
+        public event Action Clicked;
+
+        protected override void OnButtonClick()
+        {
+            base.OnButtonClick();
+            Clicked?.Invoke();
+            _panel.gameObject.SetActive(false);
+        }
     }
 }

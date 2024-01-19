@@ -1,18 +1,22 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class GamePanel : MonoBehaviour
+namespace UI
 {
-    public event UnityAction Opened;
-    public event UnityAction Closed;
-
-    private void OnEnable()
+    public class GamePanel : MonoBehaviour
     {
-        Opened?.Invoke();
-    }
+        public event Action Opened;
 
-    private void OnDisable()
-    {
-        Closed?.Invoke();
+        public event Action Closed;
+
+        private void OnEnable()
+        {
+            Opened?.Invoke();
+        }
+
+        private void OnDisable()
+        {
+            Closed?.Invoke();
+        }
     }
 }

@@ -1,24 +1,32 @@
-using UnityEngine;
-using UnityEngine.Events;
+using System;
 using Agava.YandexGames;
+using Controller;
+using UnityEngine;
 
-public class LeaderboardButton : GameButton
+namespace UI
 {
-    [SerializeField] private GamePanel _loginPanel;
-    [SerializeField] private GamePauser _gamePauser;
-
-    public event UnityAction AutorizationCompleted;
-
-    protected override void OnButtonClick()
+    public class LeaderboardButton : GameButton
     {
-        base.OnButtonClick();
+        [SerializeField] private GamePanel _loginPanel;
+        [SerializeField] private GamePauser _gamePauser;
 
-        if (_gamePauser.IsPaused == false)
+        public event Action AutorizationCompleted;
+
+        protected override void OnButtonClick()
         {
-            if (PlayerAccount.IsAuthorized == false)
-                _loginPanel.gameObject.SetActive(true);
-            else
-                AutorizationCompleted?.Invoke();
+            base.OnButtonClick();
+
+            if (_gamePauser.IsPaused == false)
+            {
+                if (PlayerAccount.IsAuthorized == false)
+                {
+                    _loginPanel.gameObject.SetActive(true);
+                }
+                else
+                {
+                    AutorizationCompleted?.Invoke();
+                }
+            }
         }
     }
 }
