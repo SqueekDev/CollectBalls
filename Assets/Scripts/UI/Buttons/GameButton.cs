@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,9 +11,11 @@ namespace UI
 
         private AudioSource _audioSource;
 
+        public event Action Clicked;
+
         protected Button Button => _button;
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             _button.onClick.AddListener(OnButtonClick);
         }
@@ -22,7 +25,7 @@ namespace UI
             _audioSource = GetComponent<AudioSource>();
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             _button.onClick.RemoveListener(OnButtonClick);
         }
@@ -30,6 +33,7 @@ namespace UI
         protected virtual void OnButtonClick()
         {
             _audioSource.Play();
+            Clicked?.Invoke();
         }
     }
 }

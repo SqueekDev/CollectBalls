@@ -16,7 +16,7 @@ namespace YandexSDK
         [SerializeField] private GameObject _leaderboardPanel;
         [SerializeField] private LevelChanger _levelChanger;
         [SerializeField] private LeaderboardButton _leaderboardButton;
-        [SerializeField] private LoginAcceptButton _loginAcceptButton;
+        [SerializeField] private GameButton _loginAcceptButton;
 
         private List<LeaderboardPlayer> _leaderboardPlayers = new List<LeaderboardPlayer>();
 
@@ -26,14 +26,14 @@ namespace YandexSDK
         {
             _levelChanger.LevelChanged += OnLevelChanged;
             _leaderboardButton.AutorizationCompleted += TryOpenPanel;
-            _loginAcceptButton.ButtonClicked += TryOpenPanel;
+            _loginAcceptButton.Clicked += TryOpenPanel;
         }
 
         private void OnDisable()
         {
             _levelChanger.LevelChanged -= OnLevelChanged;
             _leaderboardButton.AutorizationCompleted -= TryOpenPanel;
-            _loginAcceptButton.ButtonClicked -= TryOpenPanel;
+            _loginAcceptButton.Clicked -= TryOpenPanel;
         }
 
         private void TryOpenPanel()

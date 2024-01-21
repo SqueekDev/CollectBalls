@@ -16,14 +16,14 @@ namespace UI
         private string _keyName;
         private bool _isMuted;
 
-        public event Action<bool> Clicked;
+        public event Action<bool> SoundButtonClicked;
 
         private void Awake()
         {
             _keyName = GetKeyName();
             Button.image.sprite = PlayerPrefs.GetInt(_keyName, FalseValue) == TrueValue ? _musicOffIcon : _musicOnIcon;
             _isMuted = PlayerPrefs.GetInt(_keyName, FalseValue) == TrueValue;
-            Clicked?.Invoke(_isMuted);
+            SoundButtonClicked?.Invoke(_isMuted);
         }
 
         protected override void OnButtonClick()
@@ -34,13 +34,13 @@ namespace UI
             {
                 Button.image.sprite = _musicOffIcon;
                 _isMuted = true;
-                Clicked?.Invoke(_isMuted);
+                SoundButtonClicked?.Invoke(_isMuted);
             }
             else
             {
                 Button.image.sprite = _musicOnIcon;
                 _isMuted = false;
-                Clicked?.Invoke(_isMuted);
+                SoundButtonClicked?.Invoke(_isMuted);
             }
 
             SaveData(_isMuted);

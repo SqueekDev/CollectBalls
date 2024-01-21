@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Level;
 using UnityEngine;
-using UnityEngine.UI;
 using UI;
 
 namespace Controller
@@ -12,19 +11,14 @@ namespace Controller
     {
         private const float FinishLevelDelay = 1f;
 
-        [Header("Panels")]
-        [SerializeField] private GamePanel _fihishPanel;
-        [SerializeField] private Tutorial _tutorial;
         [Header("Buttons")]
-        [SerializeField] private Button _restartLevelButton;
+        [SerializeField] private GameButton _restartLevelButton;
         [SerializeField] private RestartButton _restartButton;
-        [SerializeField] private Button _nextLevelButton;
+        [SerializeField] private GameButton _nextLevelButton;
         [Header("Others")]
         [SerializeField] private DataSaver _dataSaver;
         [SerializeField] private GamePauser _gamePauser;
         [SerializeField] private CollectionField _collectionField;
-        [SerializeField] private AudioSource _clickSound;
-        [SerializeField] private AudioSource _winSound;
         [SerializeField] private List<Field> _fields;
 
         private int _currentFieldIndex = 0;
@@ -39,18 +33,18 @@ namespace Controller
 
         public event Action<int> LevelChanged;
 
-        public event Action<bool> PanelOpened;
-
         public event Action LevelFinished;
 
         public event Action LevelRestarted;
+
+        public int CurrentLevelNumber => _currentLevelNumber;
 
         private void OnEnable()
         {
             _dataSaver.LevelNumberLoaded += OnLevelNumberLoaded;
             _collectionField.AllBallsCollected += OnAllBallsCollected;
-            _restartLevelButton.onClick.AddListener(OnRestartLevelButtonClick);
-            _nextLevelButton.onClick.AddListener(NextLevel);
+            _restartLevelButton.Clicked += OnRestartLevelButtonClicked;
+            _nextLevelButton.Clicked += OnNextLevelButtonClicked;
             _restartButton.Clicked += RestartLevel;
         }
 
@@ -60,60 +54,29 @@ namespace Controller
             {
                 ChangeLevel();
             }
-
-            int turorialLevel = 1;
-
-            if (_currentLevelNumber == turorialLevel)
-            {
-                _tutorial.gameObject.SetActive(true);
-            }
-            else
-            {
-                _tutorial.gameObject.SetActive(false);
-            }
         }
 
         private void OnDisable()
         {
             _dataSaver.LevelNumberLoaded -= OnLevelNumberLoaded;
             _collectionField.AllBallsCollected -= OnAllBallsCollected;
-            _nextLevelButton.onClick.RemoveListener(NextLevel);
-            _restartLevelButton.onClick.RemoveListener(OnRestartLevelButtonClick);
+            _nextLevelButton.Clicked -= OnNextLevelButtonClicked;
+            _restartLevelButton.Clicked -= OnRestartLevelButtonClicked;
             _restartButton.Clicked -= RestartLevel;
         }
 
         private IEnumerator FinishLevel()
         {
-            PanelOpened?.Invoke(true);
             yield return _delay;
             LevelFinished?.Invoke();
-            _winSound.Play();
-            _fihishPanel.gameObject.SetActive(true);
             _fihishLevelCorutine = null;
         }
 
         private void RestartLevel()
         {
-            _clickSound.Play();
             ChangeField(_currentFieldIndex);
             LevelFinished?.Invoke();
             LevelRestarted?.Invoke();
-        }
-
-        private void NextLevel()
-        {
-            _clickSound.Play();
-            _currentFieldIndex++;
-            _currentLevelNumber++;
-
-            if (_currentFieldIndex >= _fields.Count)
-            {
-                _currentFieldIndex = 0;
-            }
-
-            _fihishPanel.gameObject.SetActive(false);
-            PanelOpened?.Invoke(false);
-            ChangeLevel();
         }
 
         private void ChangeLevel()
@@ -134,12 +97,25 @@ namespace Controller
             FieldChanged?.Invoke(_currentField.BallsCount);
         }
 
-        private void OnRestartLevelButtonClick()
+        private void OnRestartLevelButtonClicked()
         {
             if (_gamePauser.IsPaused == false)
             {
                 RestartLevel();
             }
+        }
+
+        private void OnNextLevelButtonClicked()
+        {
+            _currentFieldIndex++;
+            _currentLevelNumber++;
+
+            if (_currentFieldIndex >= _fields.Count)
+            {
+                _currentFieldIndex = 0;
+            }
+
+            ChangeLevel();
         }
 
         private void OnLevelNumberLoaded(int level)

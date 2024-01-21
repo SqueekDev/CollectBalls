@@ -9,12 +9,12 @@ namespace UI
 
         public event Action Closed;
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             Opened?.Invoke();
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             Closed?.Invoke();
         }

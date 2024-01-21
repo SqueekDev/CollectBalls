@@ -1,4 +1,3 @@
-using System;
 using Lean.Localization;
 using TMPro;
 using UnityEngine;
@@ -14,20 +13,12 @@ namespace UI
 
         private string _text;
 
-        public event Action Clicked;
-
-        private void OnEnable()
+        protected override void OnEnable()
         {
-            Button.onClick.AddListener(OnButtonClick);
+            base.OnEnable();
             _text = LeanLocalization.GetTranslationText(_phrase.name);
             string text = $"{AddedSeconds} {_text}";
             _view.text = text;
-        }
-
-        protected override void OnButtonClick()
-        {
-            base.OnButtonClick();
-            Clicked?.Invoke();
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace UI
@@ -7,12 +6,9 @@ namespace UI
     {
         [SerializeField] private GamePanel _panel;
 
-        public event Action Clicked;
-
         protected override void OnButtonClick()
         {
             base.OnButtonClick();
-            Clicked?.Invoke();
             _panel.gameObject.SetActive(false);
         }
     }

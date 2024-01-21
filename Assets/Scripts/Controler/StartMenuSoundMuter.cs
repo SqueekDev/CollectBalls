@@ -17,15 +17,15 @@ namespace Controller
 
         protected virtual void OnEnable()
         {
-            _soundButton.Clicked += OnSoundButtonClick;
-            _musicButton.Clicked += OnMusicButtonClick;
+            _soundButton.SoundButtonClicked += OnSoundButtonClick;
+            _musicButton.SoundButtonClicked += OnMusicButtonClick;
             WebApplication.InBackgroundChangeEvent += OnInBackgroundChange;
         }
 
         protected virtual void OnDisable()
         {
-            _soundButton.Clicked -= OnSoundButtonClick;
-            _musicButton.Clicked -= OnMusicButtonClick;
+            _soundButton.SoundButtonClicked -= OnSoundButtonClick;
+            _musicButton.SoundButtonClicked -= OnMusicButtonClick;
             WebApplication.InBackgroundChangeEvent -= OnInBackgroundChange;
         }
 

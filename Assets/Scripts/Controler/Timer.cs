@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using UI;
 using YandexSDK;
 
 namespace Controller
@@ -13,13 +13,13 @@ namespace Controller
         [SerializeField] private LevelChanger _levelChanger;
         [SerializeField] private GamePauser _gamePauser;
         [SerializeField] private AdShower _adShower;
-        [SerializeField] private GamePanel _lostPanel;
-        [SerializeField] private AudioSource _lostSound;
         [SerializeField] private float _startTime;
 
         private float _currentLevelTime;
         private float _time;
         private bool _isCounting;
+
+        public event Action TimeExpired;
 
         public float CurrentTime => _time;
 
@@ -45,8 +45,7 @@ namespace Controller
 
                 if (_time <= 0)
                 {
-                    _lostPanel.gameObject.SetActive(true);
-                    _lostSound.Play();
+                    TimeExpired?.Invoke();
                     _isCounting = false;
                 }
             }
@@ -56,12 +55,11 @@ namespace Controller
         {
             _time += RewardExtraTime;
             _isCounting = true;
-            _lostPanel.gameObject.SetActive(false);
         }
 
         private void OnLevelChanged(int levelNumber)
         {
-            _currentLevelTime = _startTime + (levelNumber / LevelDivider) * ExtraTimePerLevel;
+            _currentLevelTime = _startTime + ((levelNumber / LevelDivider) * ExtraTimePerLevel);
             _time = _currentLevelTime;
             _isCounting = true;
         }
