@@ -7,11 +7,10 @@ namespace Controller
         private const int PortraitFov = 50;
         private const int LandscapeFov = 35;
 
-        [SerializeField] private LevelChanger _levelChanger;
+        [SerializeField] private FieldsChanger _fieldChanger;
 
         private Camera _camera;
         private bool _isMobile;
-        private int _fieldSizeFovModifier;
 
         private void Awake()
         {
@@ -21,19 +20,19 @@ namespace Controller
 
         private void OnEnable()
         {
-            _levelChanger.FieldSizeChanged += OnFieldSizeChanged;
+            _fieldChanger.FieldSizeChanged += OnFieldSizeChanged;
         }
 
         private void OnDisable()
         {
-            _levelChanger.FieldSizeChanged -= OnFieldSizeChanged;
+            _fieldChanger.FieldSizeChanged -= OnFieldSizeChanged;
         }
 
-        private void Update()
+        private void OnFieldSizeChanged(int fieldSizeModifier)
         {
             if (_isMobile == false)
             {
-                _camera.fieldOfView = LandscapeFov + _fieldSizeFovModifier;
+                _camera.fieldOfView = LandscapeFov + fieldSizeModifier;
             }
             else
             {
@@ -43,14 +42,9 @@ namespace Controller
                 }
                 else
                 {
-                    _camera.fieldOfView = LandscapeFov + _fieldSizeFovModifier;
+                    _camera.fieldOfView = LandscapeFov + fieldSizeModifier;
                 }
             }
-        }
-
-        private void OnFieldSizeChanged(int fieldSizeModifier)
-        {
-            _fieldSizeFovModifier = fieldSizeModifier;
         }
     }
 }

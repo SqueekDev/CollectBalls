@@ -13,6 +13,8 @@ namespace Controller
 
         public event Action<int> LevelNumberLoaded;
 
+        public string KeyName => LevelNumberKey;
+
         private void Awake()
         {
             _playerPrefsSavedLevelNumber = PlayerPrefs.GetInt(LevelNumberKey, 0);
@@ -20,12 +22,12 @@ namespace Controller
 
         private void OnEnable()
         {
-            _levelChanger.LevelChanged += OnLevelChanged;
+            _levelChanger.Changed += OnLevelChanged;
         }
 
         private void OnDisable()
         {
-            _levelChanger.LevelChanged -= OnLevelChanged;
+            _levelChanger.Changed -= OnLevelChanged;
         }
 
         private void CheckLevel(int level)

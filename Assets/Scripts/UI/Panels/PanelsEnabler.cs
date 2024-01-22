@@ -9,32 +9,38 @@ namespace UI
 
         [SerializeField] private Timer _timer;
         [SerializeField] private LevelChanger _levelChanger;
+        [SerializeField] private DataSaver _dataSaver;
         [SerializeField] private LostPanel _lostPanel;
         [SerializeField] private FinishPanel _finishPanel;
         [SerializeField] private Tutorial _tutorial;
 
+        private int _savedLevelNumber;
+        private bool _isTutorialLevel;
+
         private void OnEnable()
         {
             _timer.TimeExpired += OnTimeExpired;
-            _levelChanger.LevelFinished += OnLevelFinished;
+            _levelChanger.Finished += OnLevelFinished;
         }
 
         private void Start()
         {
-            if (_levelChanger.CurrentLevelNumber == TutorialLevelNumber)
+            if (PlayerPrefs.HasKey(_dataSaver.KeyName))
             {
-                _tutorial.gameObject.SetActive(true);
+                _savedLevelNumber = PlayerPrefs.GetInt(_dataSaver.KeyName);
+                _isTutorialLevel = _savedLevelNumber == TutorialLevelNumber;
+                _tutorial.gameObject.SetActive(_isTutorialLevel);
             }
             else
             {
-                _tutorial.gameObject.SetActive(false);
+                _tutorial.gameObject.SetActive(true);
             }
         }
 
         private void OnDisable()
         {
             _timer.TimeExpired -= OnTimeExpired;            
-            _levelChanger.LevelFinished -= OnLevelFinished;
+            _levelChanger.Finished -= OnLevelFinished;
         }
 
         private void Enable(GamePanel gamePanel)

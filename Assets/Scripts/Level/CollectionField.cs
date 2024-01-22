@@ -7,10 +7,15 @@ namespace Level
 {
     public class CollectionField : MonoBehaviour
     {
-        [SerializeField] private LevelChanger _levelChanger;
+        private const int NumberToPlaySound = 1;
+        private const float MinScale = 0.3f;
+        private const float MaxScale = 1f;
+
+        [SerializeField] private FieldsChanger _fieldChanger;
         [SerializeField] private AudioSource _audioSource;
         [SerializeField] private AudioClip _audioClip;
 
+        private float _volumeScale;
         private int _soundCounter = 0;
         private int _currentFieldBallsCount;
         private List<Ball> _collectedBalls = new List<Ball>();
@@ -21,12 +26,12 @@ namespace Level
 
         private void OnEnable()
         {
-            _levelChanger.FieldChanged += OnFieldChanged;
+            _fieldChanger.Changed += OnFieldChanged;
         }
 
         private void OnDisable()
         {
-            _levelChanger.FieldChanged -= OnFieldChanged;
+            _fieldChanger.Changed -= OnFieldChanged;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -46,14 +51,10 @@ namespace Level
 
         private void PlaySound()
         {
-            int numberToPlaySound = 1;
-
-            if (_soundCounter > numberToPlaySound)
+            if (_soundCounter > NumberToPlaySound)
             {
-                float minScale = 0.3f;
-                float maxScale = 1f;
-                float volumeScale = UnityEngine.Random.Range(minScale, maxScale);
-                _audioSource.PlayOneShot(_audioClip, volumeScale);
+                _volumeScale = UnityEngine.Random.Range(MinScale, MaxScale);
+                _audioSource.PlayOneShot(_audioClip, _volumeScale);
                 _soundCounter = 0;
             }
             else

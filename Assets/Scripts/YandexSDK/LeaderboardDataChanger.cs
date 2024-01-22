@@ -24,14 +24,14 @@ namespace YandexSDK
 
         private void OnEnable()
         {
-            _levelChanger.LevelChanged += OnLevelChanged;
+            _levelChanger.Changed += OnLevelChanged;
             _leaderboardButton.AutorizationCompleted += TryOpenPanel;
             _loginAcceptButton.Clicked += TryOpenPanel;
         }
 
         private void OnDisable()
         {
-            _levelChanger.LevelChanged -= OnLevelChanged;
+            _levelChanger.Changed -= OnLevelChanged;
             _leaderboardButton.AutorizationCompleted -= TryOpenPanel;
             _loginAcceptButton.Clicked -= TryOpenPanel;
         }

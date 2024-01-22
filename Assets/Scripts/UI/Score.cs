@@ -9,7 +9,7 @@ namespace UI
     public class Score : MonoBehaviour
     {
         [SerializeField] private CollectionField _collectionField;
-        [SerializeField] private LevelChanger _levelChanger;
+        [SerializeField] private FieldsChanger _fieldChanger;
         [SerializeField] private TMP_Text _text;
         [SerializeField] private Slider _slider;
 
@@ -24,13 +24,13 @@ namespace UI
         private void OnEnable()
         {
             _collectionField.BallCollected += OnBallCollected;
-            _levelChanger.FieldChanged += OnFieldChanged;
+            _fieldChanger.Changed += OnFieldChanged;
         }
 
         private void OnDisable()
         {
             _collectionField.BallCollected -= OnBallCollected;
-            _levelChanger.FieldChanged -= OnFieldChanged;
+            _fieldChanger.Changed -= OnFieldChanged;
         }
 
         private void ChangeText()

@@ -37,13 +37,13 @@ namespace Level
         private void OnEnable()
         {
             _collectionField.AllBallsCollected += OnAllBallCollected;
-            _levelChanger.LevelChanged += OnLevelChanged;
+            _levelChanger.Changed += OnLevelChanged;
         }
 
         private void OnDisable()
         {
             _collectionField.AllBallsCollected -= OnAllBallCollected;
-            _levelChanger.LevelChanged -= OnLevelChanged;
+            _levelChanger.Changed -= OnLevelChanged;
         }
 
         private void OnTriggerEnter(Collider other)

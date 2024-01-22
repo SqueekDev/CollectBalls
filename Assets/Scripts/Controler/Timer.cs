@@ -25,15 +25,13 @@ namespace Controller
 
         private void OnEnable()
         {
-            _levelChanger.LevelChanged += OnLevelChanged;
-            _levelChanger.LevelRestarted += OnLevelRestarted;
+            _levelChanger.Changed += OnLevelChanged;
             _adShower.VideoAdShowed += OnVideoAdShowed;
         }
 
         private void OnDisable()
         {
-            _levelChanger.LevelChanged -= OnLevelChanged;
-            _levelChanger.LevelRestarted -= OnLevelRestarted;
+            _levelChanger.Changed -= OnLevelChanged;
             _adShower.VideoAdShowed -= OnVideoAdShowed;
         }
 
@@ -60,12 +58,6 @@ namespace Controller
         private void OnLevelChanged(int levelNumber)
         {
             _currentLevelTime = _startTime + ((levelNumber / LevelDivider) * ExtraTimePerLevel);
-            _time = _currentLevelTime;
-            _isCounting = true;
-        }
-
-        private void OnLevelRestarted()
-        {
             _time = _currentLevelTime;
             _isCounting = true;
         }

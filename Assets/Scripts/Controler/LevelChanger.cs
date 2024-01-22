@@ -19,23 +19,17 @@ namespace Controller
         [SerializeField] private DataSaver _dataSaver;
         [SerializeField] private GamePauser _gamePauser;
         [SerializeField] private CollectionField _collectionField;
-        [SerializeField] private List<Field> _fields;
+        [SerializeField] private FieldsChanger _fieldsChanger;
 
-        private int _currentFieldIndex = 0;
         private int _currentLevelNumber = 1;
-        private Field _currentField;
         private Coroutine _fihishLevelCorutine;
         private WaitForSeconds _delay = new WaitForSeconds(FinishLevelDelay);
 
-        public event Action<int> FieldChanged;
+        public event Action<int> Changing;
 
-        public event Action<int> FieldSizeChanged;
+        public event Action<int> Changed;
 
-        public event Action<int> LevelChanged;
-
-        public event Action LevelFinished;
-
-        public event Action LevelRestarted;
+        public event Action Finished;
 
         public int CurrentLevelNumber => _currentLevelNumber;
 
@@ -43,95 +37,61 @@ namespace Controller
         {
             _dataSaver.LevelNumberLoaded += OnLevelNumberLoaded;
             _collectionField.AllBallsCollected += OnAllBallsCollected;
+            _fieldsChanger.Changed += OnFieldChanged;
             _restartLevelButton.Clicked += OnRestartLevelButtonClicked;
             _nextLevelButton.Clicked += OnNextLevelButtonClicked;
-            _restartButton.Clicked += RestartLevel;
+            _restartButton.Clicked += ChangeLevel;
         }
 
         private void Start()
         {
-            if (_fields != null)
-            {
-                ChangeLevel();
-            }
+            ChangeLevel();
         }
 
         private void OnDisable()
         {
             _dataSaver.LevelNumberLoaded -= OnLevelNumberLoaded;
             _collectionField.AllBallsCollected -= OnAllBallsCollected;
+            _fieldsChanger.Changed -= OnFieldChanged;
             _nextLevelButton.Clicked -= OnNextLevelButtonClicked;
             _restartLevelButton.Clicked -= OnRestartLevelButtonClicked;
-            _restartButton.Clicked -= RestartLevel;
+            _restartButton.Clicked -= ChangeLevel;
         }
 
         private IEnumerator FinishLevel()
         {
             yield return _delay;
-            LevelFinished?.Invoke();
+            Finished?.Invoke();
             _fihishLevelCorutine = null;
-        }
-
-        private void RestartLevel()
-        {
-            ChangeField(_currentFieldIndex);
-            LevelFinished?.Invoke();
-            LevelRestarted?.Invoke();
         }
 
         private void ChangeLevel()
         {
-            ChangeField(_currentFieldIndex);
-            LevelChanged?.Invoke(_currentLevelNumber);
+            Changing?.Invoke(_currentLevelNumber);
         }
 
-        private void ChangeField(int fieldIndex)
+        private void OnFieldChanged(int ballsCount)
         {
-            if (_currentField != null)
-            {
-                Destroy(_currentField.gameObject);
-            }
-
-            _currentField = Instantiate(_fields[fieldIndex], transform.position + _fields[fieldIndex].transform.localPosition, Quaternion.identity, transform);
-            FieldSizeChanged?.Invoke(_currentField.FieldSizeModifier);
-            FieldChanged?.Invoke(_currentField.BallsCount);
+            Changed?.Invoke(_currentLevelNumber);
         }
 
         private void OnRestartLevelButtonClicked()
         {
             if (_gamePauser.IsPaused == false)
             {
-                RestartLevel();
+                ChangeLevel();
             }
         }
 
         private void OnNextLevelButtonClicked()
         {
-            _currentFieldIndex++;
             _currentLevelNumber++;
-
-            if (_currentFieldIndex >= _fields.Count)
-            {
-                _currentFieldIndex = 0;
-            }
-
             ChangeLevel();
         }
 
         private void OnLevelNumberLoaded(int level)
         {
             _currentLevelNumber = level;
-            int levelToIndexModifier = 1;
-
-            if (level > _fields.Count)
-            {
-                _currentFieldIndex = (level - _fields.Count - levelToIndexModifier);
-            }
-            else
-            {
-                _currentFieldIndex = level - levelToIndexModifier;
-            }
-
             ChangeLevel();
         }
 

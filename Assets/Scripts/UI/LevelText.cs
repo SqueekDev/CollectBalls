@@ -15,7 +15,7 @@ namespace UI
 
         private void OnEnable()
         {
-            _levelChanger.LevelChanged += OnLevelChanged;
+            _levelChanger.Changed += OnLevelChanged;
         }
 
         private void Start()
@@ -25,7 +25,7 @@ namespace UI
 
         private void OnDisable()
         {
-            _levelChanger.LevelChanged -= OnLevelChanged;
+            _levelChanger.Changed -= OnLevelChanged;
         }
 
         private void OnLevelChanged(int levelNumber)
