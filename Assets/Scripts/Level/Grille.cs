@@ -7,12 +7,13 @@ namespace Level
     [RequireComponent(typeof(Rigidbody), typeof(MeshRenderer))]
     public class Grille : MonoBehaviour
     {
+        private const float Step = 0.2f;
+        private const float Range = 1f;
+
         [SerializeField] private ParticleSystem _particleSystem;
         [SerializeField] private AudioClip _swipedClip;
         [SerializeField] private AudioClip _blockedClip;
 
-        private float _step = 0.2f;
-        private float _range = 1f;
         private float _moveProgress;
         private bool _targetReached;
         private Vector3 _startPosition;
@@ -36,7 +37,7 @@ namespace Level
         private void FixedUpdate()
         {
             transform.localPosition = Vector3.Lerp(_currentPosition, _targetPosition, _moveProgress);
-            _moveProgress += _step;
+            _moveProgress += Step;
 
             if (transform.localPosition == _targetPosition)
             {
@@ -74,11 +75,11 @@ namespace Level
         {
             if (_targetReached)
             {
-                _targetPosition = _startPosition + direction * _range;
+                _targetPosition = _startPosition + direction * Range;
                 RaycastHit hit;
 
                 if (_rigidbody != null
-                    && _rigidbody.SweepTest(direction, out hit, _range)
+                    && _rigidbody.SweepTest(direction, out hit, Range)
                     && (hit.collider.gameObject.TryGetComponent(out Grille grille)
                     || hit.collider.gameObject.TryGetComponent(out Obstacle obstacle)))
                 {

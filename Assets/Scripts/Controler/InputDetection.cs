@@ -61,11 +61,6 @@ namespace Controller
             }
         }
 
-        private void OnSounded(AudioClip audioClip)
-        {
-            _audioSource.PlayOneShot(audioClip);
-        }
-
         private void TrySelectGrille(Vector3 tapPosition)
         {
             Ray ray = _camera.ScreenPointToRay(tapPosition);
@@ -121,6 +116,11 @@ namespace Controller
         {
             _isSwiping = false;
             _swipeDelta = Vector3.zero;
+        }
+
+        private void OnSounded(AudioClip audioClip)
+        {
+            _audioSource.PlayOneShot(audioClip);
         }
     }
 }
