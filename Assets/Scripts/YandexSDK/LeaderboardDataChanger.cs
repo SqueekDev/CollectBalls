@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Agava.YandexGames;
 using Controller;
+using Global;
+using Lean.Localization;
 using UnityEngine;
 using UI;
 
@@ -16,6 +18,7 @@ namespace YandexSDK
         [SerializeField] private GameObject _leaderboardPanel;
         [SerializeField] private LevelChanger _levelChanger;
         [SerializeField] private LeaderboardButton _leaderboardButton;
+        [SerializeField] private LeanPhrase _anonymousText;
         [SerializeField] private GameButton _loginAcceptButton;
 
         private List<LeaderboardPlayer> _leaderboardPlayers = new List<LeaderboardPlayer>();
@@ -67,15 +70,15 @@ namespace YandexSDK
                 int results = result.entries.Length;
                 results = Mathf.Clamp(results, MinPlayersCount, MaxPlayersCount);
 
-                for (int i = 0; i < results; i++)
+                for (int i = GlobalValues.Zero; i < results; i++)
                 {
-                    string number = (i + 1).ToString();
+                    string number = (i + GlobalValues.ListIndexCorrecrion).ToString();
                     string level = result.entries[i].score.ToString();
                     string playerName = result.entries[i].player.publicName;
 
                     if (string.IsNullOrEmpty(playerName))
                     {
-                        playerName = "Anonymous";
+                        playerName = LeanLocalization.GetTranslationText(_anonymousText.name);
                     }
 
                     _leaderboardPlayers.Add(new LeaderboardPlayer(number, playerName, level));

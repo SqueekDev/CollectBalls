@@ -1,4 +1,5 @@
 using System.Collections;
+using Global;
 using Level;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,7 +45,7 @@ namespace UI
         {
             while (enabled)
             {
-                _moveProgress = 0;
+                _moveProgress = GlobalValues.Zero;
                 _pointer.transform.localPosition = _start.localPosition;
 
                 while (_pointer.transform.localPosition != _target.localPosition)

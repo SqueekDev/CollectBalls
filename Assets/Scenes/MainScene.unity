@@ -1561,7 +1561,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _timer: {fileID: 467008710}
   _levelChanger: {fileID: 1293079253}
-  _dataSaver: {fileID: 478456946}
   _lostPanel: {fileID: 1765102987}
   _finishPanel: {fileID: 1132711904}
   _tutorial: {fileID: 757118260}
@@ -7170,6 +7169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 509526229172329381}
   - component: {fileID: 5337401619703242200}
+  - component: {fileID: 5337401619703242201}
   - component: {fileID: 3810382422202211624}
   - component: {fileID: 4978434319972346996}
   m_Layer: 2
@@ -7192,8 +7192,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fieldChanger: {fileID: 497646221}
-  _audioSource: {fileID: 4978434319972346996}
-  _audioClip: {fileID: 8300000, guid: 45a4f2cf3b4702c4290e682aaa8107f1, type: 3}
 --- !u!114 &4322215055409722068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7390,6 +7388,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 0.05, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5337401619703242201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3271250063588588283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22007ce85a34d1241b88272c8cc33404, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioSource: {fileID: 4978434319972346996}
+  _audioClip: {fileID: 8300000, guid: 45a4f2cf3b4702c4290e682aaa8107f1, type: 3}
 --- !u!1001 &5564204904811659497
 PrefabInstance:
   m_ObjectHideFlags: 0

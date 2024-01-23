@@ -1,6 +1,7 @@
 using System;
 using Agava.YandexGames;
 using Controller;
+using Global;
 using UI;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace YandexSDK
     public class AdShower : MonoBehaviour
     {
         private const int NumberToShowAd = 2;
+        private const int EnabledTimeValue = 1;
 
         [SerializeField] private LevelChanger _levelChanger;
         [SerializeField] private VideoButton _videoButton;
@@ -42,7 +44,7 @@ namespace YandexSDK
 #if UNITY_WEBGL && !UNITY_EDITOR
                 InterstitialAd.Show(OnOpenCallBack, OnCloseCallBack);
 #endif
-                _counter = 0;
+                _counter = GlobalValues.Zero;
             }
         }
 
@@ -55,7 +57,7 @@ namespace YandexSDK
 
         private void OnOpenCallBack()
         {
-            Time.timeScale = 0;
+            Time.timeScale = GlobalValues.Zero;
             AdShowing?.Invoke(true);
         }
 
@@ -66,13 +68,13 @@ namespace YandexSDK
 
         private void OnCloseCallback()
         {
-            Time.timeScale = 1;
+            Time.timeScale = EnabledTimeValue;
             AdShowing?.Invoke(false);
         }
 
         private void OnCloseCallBack(bool state)
         {
-            Time.timeScale = 1;
+            Time.timeScale = EnabledTimeValue;
             AdShowing?.Invoke(false);
         }
     }

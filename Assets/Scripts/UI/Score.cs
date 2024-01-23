@@ -1,4 +1,5 @@
 using Controller;
+using Global;
 using Level;
 using TMPro;
 using UnityEngine;
@@ -18,7 +19,7 @@ namespace UI
 
         private void Awake()
         {
-            _slider.value = 0;
+            _slider.value = GlobalValues.Zero;
         }
 
         private void OnEnable()
@@ -60,7 +61,7 @@ namespace UI
 
         private void OnFieldChanged(int maxBallsCount)
         {
-            _currentBallsCount = 0;
+            _currentBallsCount = GlobalValues.Zero;
             _maxBallsCount = maxBallsCount;
             ChangeSliderValue();
             ChangeText();
