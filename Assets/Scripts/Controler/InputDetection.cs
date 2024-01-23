@@ -1,4 +1,5 @@
 using System;
+using Global;
 using Level;
 using UnityEngine;
 
@@ -6,16 +7,20 @@ namespace Controller
 {
     public class InputDetection : MonoBehaviour
     {
+        private const float MinSwipeValue = 30;
+
         [SerializeField] private GamePauser _gamePauser;
         [SerializeField] private AudioSource _audioSource;
 
-        private float _minSwipeValue = 30;
         private bool _isSwiping;
         private bool _isMobile;
         private Vector3 _tapPosition;
         private Vector3 _swipeDelta;
+        private Vector3 _swipeDirection;
         private Camera _camera;
-        private Grille _currentGrille;
+        private GrilleSwiper _currentGrille;
+        private RaycastHit _hit;
+        private Ray _ray;
 
         public static event Action<Vector3> Swiped;
 
@@ -31,11 +36,11 @@ namespace Controller
             {
                 if (_isMobile == false)
                 {
-                    if (Input.GetMouseButtonDown(0))
+                    if (Input.GetMouseButtonDown(GlobalValues.Zero))
                     {
                         TrySelectGrille(Input.mousePosition);
                     }
-                    else if (Input.GetMouseButtonUp(0))
+                    else if (Input.GetMouseButtonUp(GlobalValues.Zero))
                     {
                         UnselectGrille();
                         ResetSwipe();
@@ -43,13 +48,14 @@ namespace Controller
                 }
                 else
                 {
-                    if (Input.touchCount > 0)
+                    if (Input.touchCount > GlobalValues.Zero)
                     {
-                        if (Input.GetTouch(0).phase == TouchPhase.Began)
+                        if (Input.GetTouch(GlobalValues.Zero).phase == TouchPhase.Began)
                         {
-                            TrySelectGrille(Input.GetTouch(0).position);
+                            TrySelectGrille(Input.GetTouch(GlobalValues.Zero).position);
                         }
-                        else if (Input.GetTouch(0).phase == TouchPhase.Canceled || Input.GetTouch(0).phase == TouchPhase.Ended)
+                        else if (Input.GetTouch(GlobalValues.Zero).phase == TouchPhase.Canceled
+                            || Input.GetTouch(GlobalValues.Zero).phase == TouchPhase.Ended)
                         {
                             UnselectGrille();
                             ResetSwipe();
@@ -63,10 +69,10 @@ namespace Controller
 
         private void TrySelectGrille(Vector3 tapPosition)
         {
-            Ray ray = _camera.ScreenPointToRay(tapPosition);
-            RaycastHit hit;
+            _ray = _camera.ScreenPointToRay(tapPosition);
 
-            if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.TryGetComponent(out Grille grille))
+            if (Physics.Raycast(_ray, out _hit)
+                && _hit.collider.gameObject.TryGetComponent(out GrilleSwiper grille))
             {
                 _currentGrille = grille;
                 _currentGrille.StartSwipe();
@@ -94,20 +100,18 @@ namespace Controller
                 _swipeDelta = Input.mousePosition - _tapPosition;
             }
 
-            if (_swipeDelta.magnitude > _minSwipeValue)
+            if (_swipeDelta.magnitude > MinSwipeValue)
             {
-                Vector3 direction;
-
                 if (Mathf.Abs(_swipeDelta.x) > Mathf.Abs(_swipeDelta.y))
                 {
-                    direction = _swipeDelta.x > 0 ? Vector3.right : Vector3.left;
+                    _swipeDirection = _swipeDelta.x > GlobalValues.Zero ? Vector3.right : Vector3.left;
                 }
                 else
                 {
-                    direction = _swipeDelta.y > 0 ? Vector3.up : Vector3.down;
+                    _swipeDirection = _swipeDelta.y > GlobalValues.Zero ? Vector3.up : Vector3.down;
                 }
 
-                Swiped?.Invoke(direction);
+                Swiped?.Invoke(_swipeDirection);
                 ResetSwipe();
             }
         }

@@ -1,23 +1,20 @@
 using System;
+using Global;
 using UnityEngine;
 
 namespace Controller
 {
     public class DataSaver : MonoBehaviour
     {
-        private const string LevelNumberKey = "Level";
-
         [SerializeField] private LevelChanger _levelChanger;
 
         private int _playerPrefsSavedLevelNumber = 0;
 
         public event Action<int> LevelNumberLoaded;
 
-        public string KeyName => LevelNumberKey;
-
         private void Awake()
         {
-            _playerPrefsSavedLevelNumber = PlayerPrefs.GetInt(LevelNumberKey, 0);
+            _playerPrefsSavedLevelNumber = PlayerPrefs.GetInt(GlobalValues.PlayerPrefsLevelKey, GlobalValues.Zero);
         }
 
         private void OnEnable()
@@ -39,7 +36,7 @@ namespace Controller
             else
             {
                 _playerPrefsSavedLevelNumber = level;
-                PlayerPrefs.SetInt(LevelNumberKey, _playerPrefsSavedLevelNumber);
+                PlayerPrefs.SetInt(GlobalValues.PlayerPrefsLevelKey, _playerPrefsSavedLevelNumber);
                 PlayerPrefs.Save();
             }
         }

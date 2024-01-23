@@ -1,4 +1,5 @@
 using System;
+using Global;
 using UnityEngine;
 using YandexSDK;
 
@@ -41,7 +42,7 @@ namespace Controller
             {
                 _time -= Time.deltaTime;
 
-                if (_time <= 0)
+                if (_time <= GlobalValues.Zero)
                 {
                     TimeExpired?.Invoke();
                     _isCounting = false;

@@ -1,11 +1,12 @@
 using System;
 using Controller;
+using Global;
 using UnityEngine;
 
 namespace Level
 {
     [RequireComponent(typeof(Rigidbody), typeof(MeshRenderer))]
-    public class Grille : MonoBehaviour
+    public class GrilleSwiper : MonoBehaviour
     {
         private const float Step = 0.2f;
         private const float Range = 1f;
@@ -80,7 +81,7 @@ namespace Level
 
                 if (_rigidbody != null
                     && _rigidbody.SweepTest(direction, out hit, Range)
-                    && (hit.collider.gameObject.TryGetComponent(out Grille grille)
+                    && (hit.collider.gameObject.TryGetComponent(out GrilleSwiper grille)
                     || hit.collider.gameObject.TryGetComponent(out Obstacle obstacle)))
                 {
                     _targetPosition = _startPosition;
@@ -92,7 +93,7 @@ namespace Level
                     Sounded?.Invoke(_swipedClip);
                 }
 
-                _moveProgress = 0;
+                _moveProgress = GlobalValues.Zero;
             }
         }
     }

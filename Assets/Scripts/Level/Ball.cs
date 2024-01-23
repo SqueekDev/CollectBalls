@@ -1,4 +1,5 @@
 using System.Collections;
+using Global;
 using UnityEngine;
 
 namespace Level
@@ -15,6 +16,7 @@ namespace Level
         private const float Spread = 0.2f;
         private const float DirectionZ = -1f;
 
+        private float _sizeMultiplier;
         private CellBlock _cell;
         private Rigidbody _rigidbody;
         private SphereCollider _collider;
@@ -28,8 +30,10 @@ namespace Level
             _collider = GetComponent<SphereCollider>();
             _collider.isTrigger = true;
             _rigidbody.isKinematic = true;
-            float sizeMultiplier = Random.Range(MinSizeMultiplier, MaxSizeMultiplier);
-            transform.localScale = new Vector3(sizeMultiplier * transform.localScale.x, sizeMultiplier * transform.localScale.y, sizeMultiplier * transform.localScale.z);
+            _sizeMultiplier = Random.Range(MinSizeMultiplier, MaxSizeMultiplier);
+            transform.localScale = new Vector3(_sizeMultiplier * transform.localScale.x,
+                _sizeMultiplier * transform.localScale.y,
+                _sizeMultiplier * transform.localScale.z);
         }
 
         private void OnDisable()
@@ -61,7 +65,7 @@ namespace Level
             _rigidbody.isKinematic = false;
             float extractionForce = Random.Range(MinExtractionForce, MaxExtractionForce);
             float directionX = Random.Range(-Spread, Spread);
-            float directionY = Random.Range(0, Spread);
+            float directionY = Random.Range(GlobalValues.Zero, Spread);
             Vector3 direction = new Vector3(directionX, directionY, DirectionZ);
             _rigidbody.AddForce(direction * extractionForce, ForceMode.Impulse);
             _releaseCorutine = null;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Global;
 using UnityEngine;
 
 
@@ -8,10 +9,11 @@ namespace Level
     [RequireComponent(typeof(Rigidbody))]
     public class CellBlock : MonoBehaviour
     {
+        private const float Range = 0.2f;
+
         [SerializeField] private List<Ball> _balls;
         [SerializeField] private Rigidbody _rigidbody;
 
-        private float _range = 0.2f;
         private bool _isReleased;
 
         public event Action Released;
@@ -22,7 +24,7 @@ namespace Level
         {
             _isReleased = false;
 
-            for (int i = 0; i < _balls.Count; i++)
+            for (int i = GlobalValues.Zero; i < _balls.Count; i++)
             {
                 _balls[i].Init(this);
             }
@@ -32,9 +34,9 @@ namespace Level
         {
             if (_isReleased == false && _rigidbody != null)
             {
-                RaycastHit[] hits = _rigidbody.SweepTestAll(Vector3.back, _range);
+                RaycastHit[] hits = _rigidbody.SweepTestAll(Vector3.back, Range);
 
-                if (hits.Length == 0)
+                if (hits.Length == GlobalValues.Zero)
                 {
                     Released?.Invoke();
                     _isReleased = true;

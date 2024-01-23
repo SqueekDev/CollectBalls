@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Global;
 using Level;
 using UnityEngine;
 
@@ -7,8 +8,6 @@ namespace Controller
 {
     public class FieldsChanger : MonoBehaviour
     {
-        private const int ListIndexCorrection = 1;
-
         [SerializeField] private LevelChanger _levelChanger;
         [SerializeField] private List<Field> _fields;
 
@@ -47,11 +46,11 @@ namespace Controller
             {
                 if (levelNumber > _fields.Count)
                 {
-                    _currentFieldIndex = (levelNumber - _fields.Count - ListIndexCorrection);
+                    _currentFieldIndex = (levelNumber - _fields.Count - GlobalValues.ListIndexCorrecrion);
                 }
                 else
                 {
-                    _currentFieldIndex = levelNumber - ListIndexCorrection;
+                    _currentFieldIndex = levelNumber - GlobalValues.ListIndexCorrecrion;
                 }
 
                 ChangeField(_currentFieldIndex);

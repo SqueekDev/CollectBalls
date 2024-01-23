@@ -121,6 +121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1248522539158147802}
   - component: {fileID: 5182320500598831687}
+  - component: {fileID: -3632303180779502274}
   m_Layer: 0
   m_Name: Field56
   m_TagString: Untagged
@@ -185,6 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0dfdeb021496ae49bb55ba85b074714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fieldSizeModifier: 11
   _cellBlocks:
   - {fileID: 3329578705464653378}
   - {fileID: 8874483631167845900}
@@ -223,7 +225,18 @@ MonoBehaviour:
   - {fileID: 2100000, guid: f600d1b2b60507a4bb40f89d03b79504, type: 2}
   - {fileID: 2100000, guid: ead01964e625a144cb34adf8257e882c, type: 2}
   - {fileID: 2100000, guid: c0d14836f465322419c15d1859b4ba1a, type: 2}
-  _fieldSizeModifier: 11
+--- !u!114 &-3632303180779502274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7660912823744956957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eef145eab58a5704eac83cc08eb8c4a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &120971496738640879
 PrefabInstance:
   m_ObjectHideFlags: 0

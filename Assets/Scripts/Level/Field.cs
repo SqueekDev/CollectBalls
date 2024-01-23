@@ -1,6 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using Controller;
+using Global;
 using UnityEngine;
 
 namespace Level
@@ -9,15 +8,8 @@ namespace Level
     {
         [SerializeField] private int _fieldSizeModifier;
         [SerializeField] private List<CellBlock> _cellBlocks;
-        [SerializeField] private List<Grille> _grilles;
+        [SerializeField] private List<GrilleSwiper> _grilles;
         [SerializeField] private List<Material> _matherials;
-
-        private Quaternion _startRotation;
-        private Coroutine _shakeCorutine;
-        private Coroutine _rotateCorutine;
-        private float _delayTime = 0.01f;
-        private float _step = 0.2f;
-        private WaitUntil _delay;
 
         public int BallsCount { get; private set; }
 
@@ -25,40 +17,28 @@ namespace Level
 
         private void Awake()
         {
-            _delay = new WaitUntil(() => _rotateCorutine == null);
-            _startRotation = transform.rotation;
             FieldSizeModifier = _fieldSizeModifier;
 
-            for (int i = 0; i < _cellBlocks.Count; i++)
+            for (int i = GlobalValues.Zero; i < _cellBlocks.Count; i++)
             {
                 BallsCount += _cellBlocks[i].BallsCount;
             }
         }
 
-        private void OnEnable()
-        {
-            InputDetection.Swiped += OnSwiped;
-        }
-
         private void Start()
         {
-            for (int i = 0; i < _grilles.Count; i++)
+            for (int i = GlobalValues.Zero; i < _grilles.Count; i++)
             {
                 Material material = GetMaterial();
                 _grilles[i].SetMaterial(material);
             }
         }
 
-        private void OnDisable()
+        private Material GetMaterial()
         {
-            InputDetection.Swiped -= OnSwiped;
-        }
-
-        public Material GetMaterial()
-        {
-            if (_matherials.Count > 0)
+            if (_matherials.Count > GlobalValues.Zero)
             {
-                int matNumber = Random.Range(0, _matherials.Count);
+                int matNumber = Random.Range(GlobalValues.Zero, _matherials.Count);
                 Material material = _matherials[matNumber];
                 _matherials.RemoveAt(matNumber);
                 return material;
@@ -67,65 +47,6 @@ namespace Level
             {
                 return null;
             }
-        }
-
-        private IEnumerator Shake(Quaternion targetRotation)
-        {
-            transform.rotation = _startRotation;
-            CheckCorutine(_rotateCorutine);
-            _rotateCorutine = StartCoroutine(Rotate(_startRotation, targetRotation));
-            yield return _delay;
-            CheckCorutine(_rotateCorutine);
-            _rotateCorutine = StartCoroutine(Rotate(targetRotation, _startRotation));
-            yield return _delay;
-            _shakeCorutine = null;
-        }
-
-        private IEnumerator Rotate(Quaternion startRotation, Quaternion targetRotation)
-        {
-            WaitForSeconds delay = new WaitForSeconds(_delayTime);
-            float rotateProgress = 0;
-
-            while (transform.rotation != targetRotation)
-            {
-                transform.rotation = Quaternion.Lerp(startRotation, targetRotation, rotateProgress);
-                rotateProgress += _step;
-                yield return delay;
-            }
-
-            _rotateCorutine = null;
-        }
-
-        private void CheckCorutine(Coroutine coroutine)
-        {
-            if (coroutine != null)
-            {
-                StopCoroutine(coroutine);
-            }
-        }
-
-        private Quaternion GetRotation(Vector3 direction)
-        {
-            Quaternion rotation;
-            float rotationValue = 7f;
-
-            if (direction.x != 0)
-            {
-                rotation = direction.x > 0 ? Quaternion.Euler(0, -rotationValue, 0) : Quaternion.Euler(0, rotationValue, 0);
-            }
-            else
-            {
-                rotation = direction.y > 0 ? Quaternion.Euler(rotationValue, 0, 0) : Quaternion.Euler(-rotationValue, 0, 0);
-            }
-
-            return rotation;
-        }
-
-        private void OnSwiped(Vector3 direction)
-        {
-            CheckCorutine(_shakeCorutine);
-            Quaternion targetRotation = GetRotation(direction);
-            _shakeCorutine = StartCoroutine(Shake(targetRotation));
         }
     }
 }
