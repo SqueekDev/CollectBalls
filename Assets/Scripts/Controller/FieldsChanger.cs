@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Global;
 using Level;
 using UnityEngine;
 
@@ -15,7 +14,6 @@ namespace Controller
         private Field _currentField;
 
         public event Action<int> Changed;
-
         public event Action<int> FieldSizeChanged;
 
         private void OnEnable()
@@ -46,11 +44,11 @@ namespace Controller
             {
                 if (levelNumber > _fields.Count)
                 {
-                    _currentFieldIndex = (levelNumber - _fields.Count - GlobalValues.ListIndexCorrecrion);
+                    _currentFieldIndex = (levelNumber - _fields.Count - 1);
                 }
                 else
                 {
-                    _currentFieldIndex = levelNumber - GlobalValues.ListIndexCorrecrion;
+                    _currentFieldIndex = levelNumber - 1;
                 }
 
                 ChangeField(_currentFieldIndex);

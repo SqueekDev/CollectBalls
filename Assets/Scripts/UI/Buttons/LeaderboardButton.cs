@@ -8,7 +8,7 @@ namespace UI
     public class LeaderboardButton : GameButton
     {
         [SerializeField] private GamePanel _loginPanel;
-        [SerializeField] private GamePauser _gamePauser;
+        [SerializeField] private GamePauseFlag _gamePauser;
 
         public event Action AutorizationCompleted;
 

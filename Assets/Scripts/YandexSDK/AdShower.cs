@@ -1,7 +1,6 @@
 using System;
 using Agava.YandexGames;
 using Controller;
-using Global;
 using UI;
 using UnityEngine;
 
@@ -44,7 +43,7 @@ namespace YandexSDK
 #if UNITY_WEBGL && !UNITY_EDITOR
                 InterstitialAd.Show(OnOpenCallBack, OnCloseCallBack);
 #endif
-                _counter = GlobalValues.Zero;
+                _counter = 0;
             }
         }
 
@@ -57,7 +56,7 @@ namespace YandexSDK
 
         private void OnOpenCallBack()
         {
-            Time.timeScale = GlobalValues.Zero;
+            Time.timeScale = 0;
             AdShowing?.Invoke(true);
         }
 

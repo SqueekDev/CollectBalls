@@ -6,6 +6,8 @@ namespace UI
 {
     public class StartMenu : MonoBehaviour
     {
+        private const int GameSceneNumber = 2;
+
         [SerializeField] private GamePanel _startPanel;
         [SerializeField] private Button _startButton;
         [SerializeField] private AudioSource _clickSound;
@@ -28,7 +30,7 @@ namespace UI
         private void StartLevel()
         {
             _clickSound.Play();
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(GameSceneNumber);
         }
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using Global;
 using UnityEngine;
 using YandexSDK;
 
@@ -12,7 +11,7 @@ namespace Controller
         private const int LevelDivider = 10;
 
         [SerializeField] private LevelChanger _levelChanger;
-        [SerializeField] private GamePauser _gamePauser;
+        [SerializeField] private GamePauseFlag _gamePauser;
         [SerializeField] private AdShower _adShower;
         [SerializeField] private float _startTime;
 
@@ -42,7 +41,7 @@ namespace Controller
             {
                 _time -= Time.deltaTime;
 
-                if (_time <= GlobalValues.Zero)
+                if (_time <= 0)
                 {
                     TimeExpired?.Invoke();
                     _isCounting = false;

@@ -1,4 +1,3 @@
-using Global;
 using UnityEngine;
 
 namespace Level
@@ -29,7 +28,7 @@ namespace Level
             {
                 _volumeScale = Random.Range(MinScale, MaxScale);
                 _audioSource.PlayOneShot(_audioClip, _volumeScale);
-                _soundCounter = GlobalValues.Zero;
+                _soundCounter = 0;
             }
             else
             {

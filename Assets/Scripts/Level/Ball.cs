@@ -1,5 +1,4 @@
 using System.Collections;
-using Global;
 using UnityEngine;
 
 namespace Level
@@ -31,7 +30,8 @@ namespace Level
             _collider.isTrigger = true;
             _rigidbody.isKinematic = true;
             _sizeMultiplier = Random.Range(MinSizeMultiplier, MaxSizeMultiplier);
-            transform.localScale = new Vector3(_sizeMultiplier * transform.localScale.x,
+            transform.localScale = new Vector3(
+                _sizeMultiplier * transform.localScale.x,
                 _sizeMultiplier * transform.localScale.y,
                 _sizeMultiplier * transform.localScale.z);
         }
@@ -65,7 +65,7 @@ namespace Level
             _rigidbody.isKinematic = false;
             float extractionForce = Random.Range(MinExtractionForce, MaxExtractionForce);
             float directionX = Random.Range(-Spread, Spread);
-            float directionY = Random.Range(GlobalValues.Zero, Spread);
+            float directionY = Random.Range(0, Spread);
             Vector3 direction = new Vector3(directionX, directionY, DirectionZ);
             _rigidbody.AddForce(direction * extractionForce, ForceMode.Impulse);
             _releaseCorutine = null;

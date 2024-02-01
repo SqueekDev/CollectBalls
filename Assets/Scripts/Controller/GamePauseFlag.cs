@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using UnityEngine;
 using UI;
+using UnityEngine;
 
 namespace Controller
 {
-    public class GamePauser : MonoBehaviour
+    public class GamePauseFlag : MonoBehaviour
     {
         [SerializeField] private List<GamePanel> _panels;
 

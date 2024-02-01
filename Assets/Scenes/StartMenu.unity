@@ -348,7 +348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5db4ab89e3dd212469934a76985ec283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _soundButton: {fileID: 181682450}
+  _soundButton: {fileID: 181682454}
   _musicButton: {fileID: 95361892}
   _musicSource: {fileID: 53211135}
   _soundSources:
@@ -505,8 +505,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _button: {fileID: 95361893}
-  _musicOnIcon: {fileID: 21300000, guid: 7933e31f19f2bbd4b9ade78c38636959, type: 3}
-  _musicOffIcon: {fileID: 21300000, guid: 75d39a6e2dc632344a20aeddd455c1f6, type: 3}
+  _soundOnIcon: {fileID: 21300000, guid: 7933e31f19f2bbd4b9ade78c38636959, type: 3}
+  _soundOffIcon: {fileID: 21300000, guid: 75d39a6e2dc632344a20aeddd455c1f6, type: 3}
+  _buttonName: 0
 --- !u!114 &95361893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -663,8 +664,8 @@ GameObject:
   - component: {fileID: 181682453}
   - component: {fileID: 181682452}
   - component: {fileID: 181682451}
-  - component: {fileID: 181682450}
   - component: {fileID: 181682449}
+  - component: {fileID: 181682454}
   m_Layer: 5
   m_Name: SoundButton
   m_TagString: Untagged
@@ -788,21 +789,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &181682450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 181682447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b02aba0a19e37bc47b8f3631e2fda121, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _button: {fileID: 181682451}
-  _musicOnIcon: {fileID: 21300000, guid: 532220d94fc39774390a6c60622944e9, type: 3}
-  _musicOffIcon: {fileID: 21300000, guid: e6ba3aecf9a065445922f86c816e12cb, type: 3}
 --- !u!114 &181682451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -885,6 +871,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 181682447}
   m_CullTransparentMesh: 1
+--- !u!114 &181682454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 181682447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 754200160f17af04caf9dad902b4e69f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 181682451}
+  _soundOnIcon: {fileID: 21300000, guid: 532220d94fc39774390a6c60622944e9, type: 3}
+  _soundOffIcon: {fileID: 21300000, guid: e6ba3aecf9a065445922f86c816e12cb, type: 3}
+  _buttonName: 1
 --- !u!1 &182593077
 GameObject:
   m_ObjectHideFlags: 0

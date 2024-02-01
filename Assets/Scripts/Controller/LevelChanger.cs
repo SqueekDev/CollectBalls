@@ -1,9 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using Level;
-using UnityEngine;
 using UI;
+using UnityEngine;
 
 namespace Controller
 {
@@ -17,7 +16,7 @@ namespace Controller
         [SerializeField] private GameButton _nextLevelButton;
         [Header("Others")]
         [SerializeField] private DataSaver _dataSaver;
-        [SerializeField] private GamePauser _gamePauser;
+        [SerializeField] private GamePauseFlag _gamePauser;
         [SerializeField] private CollectionField _collectionField;
         [SerializeField] private FieldsChanger _fieldsChanger;
 
@@ -26,12 +25,8 @@ namespace Controller
         private WaitForSeconds _delay = new WaitForSeconds(FinishLevelDelay);
 
         public event Action<int> Changing;
-
         public event Action<int> Changed;
-
         public event Action Finished;
-
-        public int CurrentLevelNumber => _currentLevelNumber;
 
         private void OnEnable()
         {
@@ -40,12 +35,12 @@ namespace Controller
             _fieldsChanger.Changed += OnFieldChanged;
             _restartLevelButton.Clicked += OnRestartLevelButtonClicked;
             _nextLevelButton.Clicked += OnNextLevelButtonClicked;
-            _restartButton.Clicked += ChangeLevel;
+            _restartButton.Clicked += OnRestartButtonClicked;
         }
 
         private void Start()
         {
-            ChangeLevel();
+            Changing?.Invoke(_currentLevelNumber);
         }
 
         private void OnDisable()
@@ -55,19 +50,14 @@ namespace Controller
             _fieldsChanger.Changed -= OnFieldChanged;
             _nextLevelButton.Clicked -= OnNextLevelButtonClicked;
             _restartLevelButton.Clicked -= OnRestartLevelButtonClicked;
-            _restartButton.Clicked -= ChangeLevel;
+            _restartButton.Clicked -= OnRestartButtonClicked;
         }
 
-        private IEnumerator FinishLevel()
+        private IEnumerator FinishingLevel()
         {
             yield return _delay;
             Finished?.Invoke();
             _fihishLevelCorutine = null;
-        }
-
-        private void ChangeLevel()
-        {
-            Changing?.Invoke(_currentLevelNumber);
         }
 
         private void OnFieldChanged(int ballsCount)
@@ -75,24 +65,29 @@ namespace Controller
             Changed?.Invoke(_currentLevelNumber);
         }
 
+        private void OnRestartButtonClicked()
+        {
+            Changing?.Invoke(_currentLevelNumber);
+        }
+
         private void OnRestartLevelButtonClicked()
         {
             if (_gamePauser.IsPaused == false)
             {
-                ChangeLevel();
+                Changing?.Invoke(_currentLevelNumber);
             }
         }
 
         private void OnNextLevelButtonClicked()
         {
             _currentLevelNumber++;
-            ChangeLevel();
+            Changing?.Invoke(_currentLevelNumber);
         }
 
         private void OnLevelNumberLoaded(int level)
         {
             _currentLevelNumber = level;
-            ChangeLevel();
+            Changing?.Invoke(_currentLevelNumber);
         }
 
         private void OnAllBallsCollected()
@@ -102,7 +97,7 @@ namespace Controller
                 StopCoroutine(_fihishLevelCorutine);
             }
 
-            _fihishLevelCorutine = StartCoroutine(FinishLevel());
+            _fihishLevelCorutine = StartCoroutine(FinishingLevel());
         }
     }
 }

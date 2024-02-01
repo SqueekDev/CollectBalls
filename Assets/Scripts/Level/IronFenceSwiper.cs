@@ -1,12 +1,11 @@
 using System;
 using Controller;
-using Global;
 using UnityEngine;
 
 namespace Level
 {
     [RequireComponent(typeof(Rigidbody), typeof(MeshRenderer))]
-    public class GrilleSwiper : MonoBehaviour
+    public class IronFenceSwiper : MonoBehaviour
     {
         private const float Step = 0.2f;
         private const float Range = 1f;
@@ -39,15 +38,6 @@ namespace Level
         {
             transform.localPosition = Vector3.Lerp(_currentPosition, _targetPosition, _moveProgress);
             _moveProgress += Step;
-
-            if (transform.localPosition == _targetPosition)
-            {
-                _targetReached = true;
-            }
-            else
-            {
-                _targetReached = false;
-            }
         }
 
         public void StartSwipe()
@@ -74,6 +64,8 @@ namespace Level
 
         private void OnSwiped(Vector3 direction)
         {
+            _targetReached = transform.localPosition == _targetPosition;
+
             if (_targetReached)
             {
                 _targetPosition = _startPosition + direction * Range;
@@ -81,7 +73,7 @@ namespace Level
 
                 if (_rigidbody != null
                     && _rigidbody.SweepTest(direction, out hit, Range)
-                    && (hit.collider.gameObject.TryGetComponent(out GrilleSwiper grille)
+                    && (hit.collider.gameObject.TryGetComponent(out IronFenceSwiper grille)
                     || hit.collider.gameObject.TryGetComponent(out Obstacle obstacle)))
                 {
                     _targetPosition = _startPosition;
@@ -93,7 +85,7 @@ namespace Level
                     Sounded?.Invoke(_swipedClip);
                 }
 
-                _moveProgress = GlobalValues.Zero;
+                _moveProgress = 0;
             }
         }
     }

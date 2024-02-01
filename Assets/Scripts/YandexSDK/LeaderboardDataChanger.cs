@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using Agava.YandexGames;
 using Controller;
-using Global;
 using Lean.Localization;
-using UnityEngine;
 using UI;
+using UnityEngine;
 
 namespace YandexSDK
 {
@@ -70,9 +69,9 @@ namespace YandexSDK
                 int results = result.entries.Length;
                 results = Mathf.Clamp(results, MinPlayersCount, MaxPlayersCount);
 
-                for (int i = GlobalValues.Zero; i < results; i++)
+                for (int i = 0; i < results; i++)
                 {
-                    string number = (i + GlobalValues.ListIndexCorrecrion).ToString();
+                    string number = (i + 1).ToString();
                     string level = result.entries[i].score.ToString();
                     string playerName = result.entries[i].player.publicName;
 

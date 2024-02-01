@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Agava.WebUtility;
-using UnityEngine;
 using UI;
+using UnityEngine;
 
 namespace Controller
 {
@@ -10,8 +10,8 @@ namespace Controller
         protected const float VolumeOff = 0f;
         protected const float VolumeOn = 1f;
 
-        [SerializeField] private MusicButton _soundButton;
-        [SerializeField] private MusicButton _musicButton;
+        [SerializeField] private SoundButton _soundButton;
+        [SerializeField] private SoundButton _musicButton;
         [SerializeField] private AudioSource _musicSource;
         [SerializeField] private List<AudioSource> _soundSources;
 
@@ -31,45 +31,20 @@ namespace Controller
 
         protected virtual void OnInBackgroundChange(bool inBackground)
         {
-            if (inBackground)
-            {
-                AudioListener.volume = VolumeOff;
-                AudioListener.pause = inBackground;
-            }
-            else
-            {
-                AudioListener.volume = VolumeOn;
-                AudioListener.pause = inBackground;
-            }
+            AudioListener.volume = inBackground ? VolumeOff : VolumeOn;
+            AudioListener.pause = inBackground;
         }
 
         private void OnMusicButtonClick(bool isMuted)
         {
-            if (isMuted)
-            {
-                _musicSource.mute = true;
-            }
-            else
-            {
-                _musicSource.mute = false;
-            }
+            _musicSource.mute = isMuted;
         }
 
         private void OnSoundButtonClick(bool isMuted)
         {
-            if (isMuted)
+            foreach (var source in _soundSources)
             {
-                foreach (var sound in _soundSources)
-                {
-                    sound.mute = true;
-                }
-            }
-            else
-            {
-                foreach (var sound in _soundSources)
-                {
-                    sound.mute = false;
-                }
+                source.mute = isMuted;
             }
         }
     }

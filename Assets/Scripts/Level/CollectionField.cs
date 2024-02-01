@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Controller;
-using Global;
 using UnityEngine;
 
 namespace Level
@@ -34,7 +33,7 @@ namespace Level
                 _collectedBalls.Add(ball);
                 BallCollected?.Invoke(_collectedBalls.Count);
 
-                if (_currentFieldBallsCount > GlobalValues.Zero
+                if (_currentFieldBallsCount > 0
                     && _collectedBalls.Count >= _currentFieldBallsCount)
                 {
                     AllBallsCollected?.Invoke();
@@ -46,7 +45,7 @@ namespace Level
         {
             _currentFieldBallsCount = ballsCount;
 
-            for (int i = GlobalValues.Zero; i < _collectedBalls.Count; i++)
+            for (int i = 0; i < _collectedBalls.Count; i++)
             {
                 Destroy(_collectedBalls[i].gameObject);
             }

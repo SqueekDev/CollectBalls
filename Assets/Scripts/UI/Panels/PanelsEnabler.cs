@@ -1,5 +1,4 @@
 using Controller;
-using Global;
 using UnityEngine;
 
 namespace UI
@@ -13,6 +12,7 @@ namespace UI
         [SerializeField] private LostPanel _lostPanel;
         [SerializeField] private FinishPanel _finishPanel;
         [SerializeField] private Tutorial _tutorial;
+        [SerializeField] private DataSaver _dataSaver;
 
         private int _savedLevelNumber;
         private bool _isTutorialLevel;
@@ -25,9 +25,9 @@ namespace UI
 
         private void Start()
         {
-            if (PlayerPrefs.HasKey(GlobalValues.PlayerPrefsLevelKey))
+            if (PlayerPrefs.HasKey(_dataSaver.KeyName))
             {
-                _savedLevelNumber = PlayerPrefs.GetInt(GlobalValues.PlayerPrefsLevelKey);
+                _savedLevelNumber = PlayerPrefs.GetInt(_dataSaver.KeyName);
                 _isTutorialLevel = _savedLevelNumber == TutorialLevelNumber;
                 _tutorial.gameObject.SetActive(_isTutorialLevel);
             }
@@ -39,7 +39,7 @@ namespace UI
 
         private void OnDisable()
         {
-            _timer.TimeExpired -= OnTimeExpired;            
+            _timer.TimeExpired -= OnTimeExpired;
             _levelChanger.Finished -= OnLevelFinished;
         }
 

@@ -1,6 +1,5 @@
 using System.Collections;
 using Controller;
-using Global;
 using UnityEngine;
 
 namespace Level
@@ -48,7 +47,7 @@ namespace Level
 
         private IEnumerator Rotate(Quaternion startRotation, Quaternion targetRotation)
         {
-            _rotateProgress = GlobalValues.Zero;
+            _rotateProgress = 0;
 
             while (transform.rotation != targetRotation)
             {
@@ -72,17 +71,17 @@ namespace Level
         {
             Quaternion rotation;
 
-            if (direction.x != GlobalValues.Zero)
+            if (direction.x != 0)
             {
-                rotation = direction.x > GlobalValues.Zero
-                    ? Quaternion.Euler(GlobalValues.Zero, -RotationValue, GlobalValues.Zero)
-                    : Quaternion.Euler(GlobalValues.Zero, RotationValue, GlobalValues.Zero);
+                rotation = direction.x > 0
+                    ? Quaternion.Euler(0, -RotationValue, 0)
+                    : Quaternion.Euler(0, RotationValue, 0);
             }
             else
             {
-                rotation = direction.y > GlobalValues.Zero
-                    ? Quaternion.Euler(RotationValue, GlobalValues.Zero, GlobalValues.Zero)
-                    : Quaternion.Euler(-RotationValue, GlobalValues.Zero, GlobalValues.Zero);
+                rotation = direction.y > 0
+                    ? Quaternion.Euler(RotationValue, 0, 0)
+                    : Quaternion.Euler(-RotationValue, 0, 0);
             }
 
             return rotation;

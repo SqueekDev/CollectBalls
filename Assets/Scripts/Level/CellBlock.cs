@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Global;
 using UnityEngine;
-
 
 namespace Level
 {
@@ -24,7 +22,7 @@ namespace Level
         {
             _isReleased = false;
 
-            for (int i = GlobalValues.Zero; i < _balls.Count; i++)
+            for (int i = 0; i < _balls.Count; i++)
             {
                 _balls[i].Init(this);
             }
@@ -36,7 +34,7 @@ namespace Level
             {
                 RaycastHit[] hits = _rigidbody.SweepTestAll(Vector3.back, Range);
 
-                if (hits.Length == GlobalValues.Zero)
+                if (hits.Length == 0)
                 {
                     Released?.Invoke();
                     _isReleased = true;
