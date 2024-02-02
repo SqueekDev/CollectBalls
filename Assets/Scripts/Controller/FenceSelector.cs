@@ -6,7 +6,7 @@ namespace Controller
 {
     public class FenceSelector : MonoBehaviour
     {
-        [SerializeField] private InputDetection _inputDetection;
+        [SerializeField] private InputDetector _inputDetector;
         
         private Ray _ray;
         private Camera _camera;
@@ -23,14 +23,14 @@ namespace Controller
 
         private void OnEnable()
         {
-            _inputDetection.ButtonPressed += OnButtonPressed;
-            _inputDetection.ButtonReleased += OnButtonReleased;
+            _inputDetector.ButtonPressed += OnButtonPressed;
+            _inputDetector.ButtonReleased += OnButtonReleased;
         }
 
         private void OnDisable()
         {
-            _inputDetection.ButtonPressed -= OnButtonPressed;
-            _inputDetection.ButtonReleased -= OnButtonReleased;
+            _inputDetector.ButtonPressed -= OnButtonPressed;
+            _inputDetector.ButtonReleased -= OnButtonReleased;
         }
 
         private void OnButtonPressed(Vector3 tapPosition)

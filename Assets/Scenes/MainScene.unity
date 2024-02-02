@@ -620,7 +620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb1645e8be1b504383e6223df8715d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inputDetection: {fileID: 193630238}
+  _inputDetector: {fileID: 193630238}
 --- !u!4 &107364602
 Transform:
   m_ObjectHideFlags: 0

@@ -25,12 +25,12 @@ namespace Level
 
         private void OnEnable()
         {
-            InputDetection.Swiped += OnSwiped;
+            InputDetector.Swiped += OnSwiped;
         }
 
         private void OnDisable()
         {
-            InputDetection.Swiped -= OnSwiped;
+            InputDetector.Swiped -= OnSwiped;
         }
 
         private IEnumerator Shake(Quaternion targetRotation)

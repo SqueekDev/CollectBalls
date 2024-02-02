@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Controller
 {
-    public class InputDetection : MonoBehaviour
+    public class InputDetector : MonoBehaviour
     {
         private const float MinSwipeValue = 30;
 

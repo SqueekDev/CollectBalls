@@ -42,14 +42,14 @@ namespace Level
 
         public void StartSwipe()
         {
-            InputDetection.Swiped += OnSwiped;
+            InputDetector.Swiped += OnSwiped;
             _particleSystem.Play();
             _currentPosition = transform.localPosition;
         }
 
         public void FinishSwipe()
         {
-            InputDetection.Swiped -= OnSwiped;
+            InputDetector.Swiped -= OnSwiped;
             _particleSystem.Stop();
         }
 
